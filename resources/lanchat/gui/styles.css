@@ -1,0 +1,27 @@
+.root{
+	-fx-background-color: white;
+}
+.title{
+	-fx-text-fill: #3399ff;
+	-fx-font: 60px "Impact, Charcoal, sans-serif";
+}
+.highlight{
+	-fx-text-fill: white;
+	-fx-background-color: #3399ff;
+}
+.split-pane:horizontal .split-pane-divider{
+	-fx-background-color: #3399ff;
+	-fx-padding: 0 0.25 0 0.25;
+}
+.title-bar{
+	-fx-border-style: hidden hidden solid hidden;
+	-fx-border-width: 3px;
+	-fx-border-color: #3399ff;
+	-fx-padding: 0 0 3 10;
+}
+.status-red{
+	-fx-background-color: #ff704d;
+}
+.status-green{
+	-fx-background-color: #71da71;
+}
