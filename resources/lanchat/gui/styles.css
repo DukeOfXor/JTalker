@@ -25,3 +25,9 @@
 .status-green{
 	-fx-background-color: #71da71;
 }
+.text-area-log{
+	-fx-focus-color: transparent;
+	-fx-faint-focus-color: transparent;
+	-fx-background-color: white;
+	-fx-font: 15px "Impact, Charcoal, sans-serif";
+}

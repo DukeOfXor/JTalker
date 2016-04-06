@@ -3,12 +3,10 @@ package lanchat.gui;
 import java.net.Inet4Address;
 
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
@@ -23,6 +21,7 @@ public class ServerGUI extends Application{
   private BorderPane rootPane;
   private Label labelAddress;
   private StackPane wrapperTop;
+  private TextArea textAreaLog;
   
   @Override
   public void start(Stage primaryStage) throws Exception {
@@ -48,6 +47,10 @@ public class ServerGUI extends Application{
         }
       }
     });
+    textAreaLog = new TextArea();
+    textAreaLog.setEditable(false);
+    textAreaLog.setWrapText(true);
+    textAreaLog.getStyleClass().add("text-area-log");
     
     labelAddress = new Label(Inet4Address.getLocalHost().getHostAddress() + ":" + LanChatServer.PORT);
     labelAddress.getStyleClass().add("title");
@@ -68,6 +71,7 @@ public class ServerGUI extends Application{
       }
     });
     
+    rootPane.setCenter(textAreaLog);
     wrapperTop.getChildren().add(labelAddress);
     rootPane.setTop(wrapperTop);
     
@@ -82,6 +86,12 @@ public class ServerGUI extends Application{
       wrapperTop.getStyleClass().removeAll("status-green");
       wrapperTop.getStyleClass().add("status-red");
     }
+  }
+  
+  public void displayMessage(String prefix, String message){
+    textAreaLog.appendText("[" + prefix + "] ");
+    textAreaLog.appendText(message);
+    textAreaLog.appendText("\n");
   }
 
 }

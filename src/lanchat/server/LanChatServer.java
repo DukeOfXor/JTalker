@@ -25,11 +25,13 @@ public class LanChatServer extends Thread{
   @Override
   public void run() {
     try {
+      displayGuiMessage("Starting server...");
       serverSocket = new ServerSocket(PORT);
     
       running = true;
       changeGuiState();
-    
+      
+      displayGuiMessage("Server started!");
       while(running){
         //server loop
         Socket socket = serverSocket.accept(); 
@@ -53,13 +55,17 @@ public class LanChatServer extends Thread{
   }
   
   public void shutdown(){
+    displayGuiMessage("Stopping server...");
     try {
-      serverSocket.close();
+      if(serverSocket != null){
+        serverSocket.close();
+      }
       for (ClientThread clientThread : clientList) {
         clientThread.shutdown();
       }
       running = false;
       changeGuiState();
+      displayGuiMessage("Server stopped!");
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -78,5 +84,24 @@ public class LanChatServer extends Thread{
       }
     });
     
+  }
+  
+  private void displayGuiMessage(String message){
+    Platform.runLater(new Runnable() {
+      
+      @Override
+      public void run() {
+        gui.displayMessage("Server", message);
+      }
+    });
+  }
+  private void displayGuiMessage(String prefix, String message){
+    Platform.runLater(new Runnable() {
+      
+      @Override
+      public void run() {
+        gui.displayMessage(prefix, message);
+      }
+    });
   }
 }
