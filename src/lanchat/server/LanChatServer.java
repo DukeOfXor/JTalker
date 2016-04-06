@@ -41,7 +41,8 @@ public class LanChatServer extends Thread{
         clientThread.start();
       }
     } catch (SocketException e1) {
-      //ignoring this exception. "socket closed" will throw, when Server is waiting for connections and somebody shuts down the server.
+      //serverSocket.accept() will throw an exception because the socket gets closed, while its waiting for connections
+      //this can't be prevented, therefore the exception is ignored
      if(!e1.getMessage().equals("socket closed")){
        e1.printStackTrace();
      }
