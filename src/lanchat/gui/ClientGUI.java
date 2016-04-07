@@ -51,6 +51,7 @@ public class ClientGUI extends Application{
 
       @Override
       public void handle(WindowEvent event) {
+        client.logout();
         client.disconnect();
         try {
           client.join();
@@ -76,7 +77,7 @@ public class ClientGUI extends Application{
       }
     });
     
-    
+    //login form
     labelUsername = new Label("Username");
     labelUsername.getStyleClass().add("label-login");
     
@@ -118,8 +119,17 @@ public class ClientGUI extends Application{
     rootPane.setCenter(vBoxLoginForm);
     
     primaryStage.show();
+    
+    //chat view
+    //these components are created here, however they are only displayed if startChatView is called
   }
 
+  public void startChatView(){
+    rootPane.setCenter(null);
+    
+    
+  }
+  
   protected void connect(String ip, String username) {
     String[] split = ip.split(":");
     String address = split[0];
@@ -128,7 +138,7 @@ public class ClientGUI extends Application{
       Integer.parseInt(split[1]);
     }
     
-    client = new Client(split[0], port, username, this);
+    client = new Client(address, port, username, this);
     client.start();
   }
 

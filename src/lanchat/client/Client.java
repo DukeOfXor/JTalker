@@ -55,7 +55,7 @@ public class Client extends Thread{
       return;
     }
     
-    //TODO update gui
+    startChatView();
   }
 
   private void displayLoginErrorMessage(String errorMessage) {
@@ -66,6 +66,23 @@ public class Client extends Thread{
          gui.setLoginErrorText(errorMessage);
       }
     });
+  }
+  
+  private void startChatView(){
+    Platform.runLater(new Runnable() {
+      
+      @Override
+      public void run() {
+        gui.startChatView();
+      }
+    });
+  }
+  public void logout(){
+    try {
+      outputStream.writeObject(new ClientMessage(ClientMessageType.LOGOUT, "", ""));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   public void disconnect() {
