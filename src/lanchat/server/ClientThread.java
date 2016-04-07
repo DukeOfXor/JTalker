@@ -135,7 +135,7 @@ public class ClientThread extends Thread{
         inetAddress.replace("\\", "");
         if(getUsername() != null){
           if(!getUsername().isEmpty()){
-            gui.displayMessage(inetAddress + " | " + getUsername(), message);
+            gui.displayMessage(inetAddress + "][" + getUsername(), message);
           } else {
             gui.displayMessage(inetAddress, message);
           }

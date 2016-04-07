@@ -1,6 +1,8 @@
 package lanchat.gui;
 
 import java.net.Inet4Address;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -31,12 +33,14 @@ public class ServerGUI extends Application{
   private TextField textFieldInput;
   private CommandHandler cmdHandler;
   private Stage primaryStage;
+  private SimpleDateFormat simpleDateFormat;
   
   @Override
   public void start(Stage primaryStage) throws Exception {
     this.primaryStage = primaryStage;
     setLanChatServer(new LanChatServer(gui));
     cmdHandler = new CommandHandler(gui);
+    simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
     
     rootPane = new BorderPane();
     
@@ -114,13 +118,15 @@ public class ServerGUI extends Application{
   }
   
   public void displayMessage(String prefix, String message){
+    textAreaLog.appendText(simpleDateFormat.format(Calendar.getInstance().getTime()) + ":");
     textAreaLog.appendText("[" + prefix + "] ");
     textAreaLog.appendText(message);
     textAreaLog.appendText("\n");
   }
 
   public void displayMessage(String message){
-    textAreaLog.appendText("[" + "Server" + "] ");
+    textAreaLog.appendText(simpleDateFormat.format(Calendar.getInstance().getTime()) + ":");
+    textAreaLog.appendText("[" + "Server" + "]");
     textAreaLog.appendText(message);
     textAreaLog.appendText("\n");
   }
