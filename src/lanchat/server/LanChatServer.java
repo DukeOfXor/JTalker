@@ -91,7 +91,7 @@ public class LanChatServer extends Thread{
       
       @Override
       public void run() {
-        gui.displayMessage("Server", message);
+        gui.displayMessage(message);
       }
     });
   }

@@ -7,7 +7,9 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -22,10 +24,15 @@ public class ServerGUI extends Application{
   private Label labelAddress;
   private StackPane wrapperTop;
   private TextArea textAreaLog;
+  private TextField textFieldInput;
+  private CommandHandler cmdHandler;
+  private Stage primaryStage;
   
   @Override
   public void start(Stage primaryStage) throws Exception {
-    lanChatServer = new LanChatServer(gui);
+    this.primaryStage = primaryStage;
+    setLanChatServer(new LanChatServer(gui));
+    cmdHandler = new CommandHandler(gui);
     
     rootPane = new BorderPane();
     
@@ -39,14 +46,27 @@ public class ServerGUI extends Application{
 
       @Override
       public void handle(WindowEvent event) {
-        lanChatServer.shutdown();
+        getLanChatServer().shutdown();
         try {
-          lanChatServer.join();
+          getLanChatServer().join();
         } catch (InterruptedException e) {
           e.printStackTrace();
         }
       }
     });
+    textFieldInput = new TextField();
+    textFieldInput.getStyleClass().add("text-field-input");
+    textFieldInput.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+      @Override
+      public void handle(KeyEvent event) {
+         if(event.getCode().equals(KeyCode.ENTER)){
+           cmdHandler.handleCommand(textFieldInput.getText());
+           textFieldInput.setText("");
+         }
+      }
+    });
+    
     textAreaLog = new TextArea();
     textAreaLog.setEditable(false);
     textAreaLog.setWrapText(true);
@@ -58,19 +78,8 @@ public class ServerGUI extends Application{
     wrapperTop = new StackPane();
     wrapperTop.getStyleClass().add("title-bar");
     wrapperTop.getStyleClass().add("status-red");
-    wrapperTop.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-      @Override
-      public void handle(MouseEvent event) {
-        if(lanChatServer.isRunning()){
-          lanChatServer.shutdown();
-        } else {
-          lanChatServer = new LanChatServer(gui);
-          lanChatServer.start();
-        }
-      }
-    });
     
+    rootPane.setBottom(textFieldInput);
     rootPane.setCenter(textAreaLog);
     wrapperTop.getChildren().add(labelAddress);
     rootPane.setTop(wrapperTop);
@@ -79,7 +88,7 @@ public class ServerGUI extends Application{
   }
   
   public void updateState(){
-    if(lanChatServer.isRunning()){
+    if(getLanChatServer().isRunning()){
       wrapperTop.getStyleClass().removeAll("status-red");
       wrapperTop.getStyleClass().add("status-green");
     } else {
@@ -94,4 +103,25 @@ public class ServerGUI extends Application{
     textAreaLog.appendText("\n");
   }
 
+  public void displayMessage(String message){
+    textAreaLog.appendText("[" + "Server" + "] ");
+    textAreaLog.appendText(message);
+    textAreaLog.appendText("\n");
+  }
+
+  public LanChatServer getLanChatServer() {
+    return lanChatServer;
+  }
+
+  public void setLanChatServer(LanChatServer lanChatServer) {
+    this.lanChatServer = lanChatServer;
+  }
+
+  public void clearConsole() {
+    textAreaLog.setText("");
+  }
+  
+  public void close(){
+    primaryStage.close();
+  }
 }
