@@ -1,12 +1,15 @@
 package lanchat.server;
 
 import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 
 import javafx.application.Platform;
+import lanchat.common.ServerMessage;
 import lanchat.gui.ServerGUI;
 
 public class LanChatServer extends Thread{
@@ -38,8 +41,8 @@ public class LanChatServer extends Thread{
         if(!running){
           break;
         }
-        ClientThread clientThread = new ClientThread(socket);
-        clientList.add(clientThread);
+        ClientThread clientThread = new ClientThread(socket, gui, this);
+        getClientList().add(clientThread);
         clientThread.start();
       }
     } catch (SocketException e1) {
@@ -54,13 +57,33 @@ public class LanChatServer extends Thread{
     }
   }
   
+  synchronized void broadcast(ServerMessage message){
+    int removedClientsCounter = 0;
+    for (ClientThread clientThread : getClientList()) {
+      if(clientThread.isConnected()){
+        clientThread.writeMessage(message);
+      } else {
+        removeClient(clientThread);
+        removedClientsCounter++;
+      }
+    }
+    
+    if(removedClientsCounter > 0){
+      displayGuiMessage("Removed " + removedClientsCounter + " clients, which were not properly disconnected");
+    }
+  }
+  
+  synchronized void removeClient(ClientThread clientThreadToRemove){
+        getClientList().remove(clientThreadToRemove);
+  }
+  
   public void shutdown(){
     displayGuiMessage("Stopping server...");
     try {
       if(serverSocket != null){
         serverSocket.close();
       }
-      for (ClientThread clientThread : clientList) {
+      for (ClientThread clientThread : getClientList()) {
         clientThread.shutdown();
       }
       running = false;
@@ -103,5 +126,13 @@ public class LanChatServer extends Thread{
         gui.displayMessage(prefix, message);
       }
     });
+  }
+
+  public ArrayList<ClientThread> getClientList() {
+    return clientList;
+  }
+
+  private void setClientList(ArrayList<ClientThread> clientList) {
+    this.clientList = clientList;
   }
 }
