@@ -33,8 +33,13 @@ public class LauncherGUI extends Application {
 
         @Override
           public void handle(MouseEvent event) {
-            //open Client GUI
-          System.out.println("client");
+          ClientGUI clientGUI = new ClientGUI();
+          try {
+            clientGUI.start(new Stage());
+          } catch (Exception e) {
+            e.printStackTrace();
+          };
+          primaryStage.close();
           }
         });
 	    leftPane.setOnMouseEntered(new EventHandler<MouseEvent>() {

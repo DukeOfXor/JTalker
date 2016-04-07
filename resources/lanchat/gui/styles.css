@@ -40,3 +40,32 @@
 	-fx-border-width: 3px;
 	-fx-border-color: #3399ff;
 }
+.label-login{
+	-fx-font: 15px "Impact, Charcoal, sans-serif";
+}
+.text-field-login{
+	-fx-focus-color: transparent;
+	-fx-faint-focus-color: transparent;
+	-fx-font: 15px "Impact, Charcoal, sans-serif";
+	-fx-border-width: 2px;
+	-fx-border-color: #3399ff;
+}
+.text-field-login-invalid{
+		-fx-border-color: red;
+}
+.button-login{
+	-fx-background-color: #3399ff;
+	-fx-font: 15px "Impact, Charcoal, sans-serif";
+	-fx-background-radius: 0;
+	-fx-background-insets: 0;
+}
+.button-login:pressed{
+	-fx-background-insets: 0.5 0.5 0.5 0.5;
+}
+.stack-pane-login{
+	-fx-padding: 10 0 0 0;
+}
+.vbox-login{
+	-fx-background-color: white;
+	-fx-padding: 0 100 0 100;
+}

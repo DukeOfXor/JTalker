@@ -40,7 +40,7 @@ public class ServerGUI extends Application{
     
     rootPane = new BorderPane();
     
-    Scene scene = new Scene(rootPane, 500, 300);
+    Scene scene = new Scene(rootPane, 1000, 600);
     scene.getStylesheets().add(getClass().getResource("/lanchat/gui/styles.css").toExternalForm());
     primaryStage.setScene(scene);
     primaryStage.setTitle("LanChat-Server");
