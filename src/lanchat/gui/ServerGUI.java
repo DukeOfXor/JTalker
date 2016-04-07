@@ -8,8 +8,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -76,8 +80,20 @@ public class ServerGUI extends Application{
     labelAddress.getStyleClass().add("title");
     
     wrapperTop = new StackPane();
+    Tooltip wrapperTopTooltip = new Tooltip("Click to copy the address");
+    Tooltip.install(wrapperTop, wrapperTopTooltip);
     wrapperTop.getStyleClass().add("title-bar");
     wrapperTop.getStyleClass().add("status-red");
+    wrapperTop.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+      @Override
+      public void handle(MouseEvent event) {
+        Clipboard clipboard = Clipboard.getSystemClipboard();
+        ClipboardContent content = new ClipboardContent();
+        content.putString(labelAddress.getText());
+        clipboard.setContent(content);
+      }
+    });
     
     rootPane.setBottom(textFieldInput);
     rootPane.setCenter(textAreaLog);

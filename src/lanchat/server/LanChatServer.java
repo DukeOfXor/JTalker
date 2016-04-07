@@ -31,7 +31,7 @@ public class LanChatServer extends Thread{
       running = true;
       changeGuiState();
       
-      displayGuiMessage("Server started!");
+      displayGuiMessage("Server started");
       while(running){
         //server loop
         Socket socket = serverSocket.accept(); 
@@ -65,7 +65,7 @@ public class LanChatServer extends Thread{
       }
       running = false;
       changeGuiState();
-      displayGuiMessage("Server stopped!");
+      displayGuiMessage("Server stopped");
     } catch (IOException e) {
       e.printStackTrace();
     }
