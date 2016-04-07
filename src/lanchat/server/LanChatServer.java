@@ -117,6 +117,7 @@ public class LanChatServer extends Thread{
       }
     });
   }
+  
   private void displayGuiMessage(String prefix, String message){
     Platform.runLater(new Runnable() {
       

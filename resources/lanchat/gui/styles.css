@@ -43,6 +43,10 @@
 .label-login{
 	-fx-font: 15px "Impact, Charcoal, sans-serif";
 }
+.label-login-error{
+	-fx-font: 15px "Impact, Charcoal, sans-serif";
+	-fx-text-fill: red;
+}
 .text-field-login{
 	-fx-focus-color: transparent;
 	-fx-faint-focus-color: transparent;
@@ -63,7 +67,7 @@
 	-fx-background-insets: 0.5 0.5 0.5 0.5;
 }
 .stack-pane-login{
-	-fx-padding: 10 0 0 0;
+	-fx-padding: 10 0 10 0;
 }
 .vbox-login{
 	-fx-background-color: white;

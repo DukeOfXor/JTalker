@@ -30,8 +30,8 @@ public class ClientThread extends Thread{
     this.server = server;
     
     try {
-      inputStream = new ObjectInputStream(socket.getInputStream());
       outputStream = new ObjectOutputStream(socket.getOutputStream());
+      inputStream = new ObjectInputStream(socket.getInputStream());
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -44,10 +44,14 @@ public class ClientThread extends Thread{
       try {
         clientMessage = (ClientMessage) inputStream.readObject();
       } catch (ClassNotFoundException e) {
-        displayGuiMessage("Error reading message");
+        server.removeClient(this);
+        shutdown();
         break;
       } catch (IOException e) {
-        displayGuiMessage("Error reading message");
+        //this will throw if a client disconnects
+        displayGuiMessage("Disconnected without logging out");
+        server.removeClient(this);
+        shutdown();
         break;
       }
       
@@ -62,6 +66,8 @@ public class ClientThread extends Thread{
             displayGuiMessage("Sent message: " + message);
           } else {
             displayGuiMessage("Tried to send a message while not logged in");
+            running = false;
+            displayGuiMessage("Disconnected");
           }
           break;
         case LOGIN:
@@ -70,10 +76,16 @@ public class ClientThread extends Thread{
           displayGuiMessage("Logged in");
           break;
         case LOGOUT:
-          isLoggedIn = false;
-          displayGuiMessage("Logged out");
-          running = false;
-          displayGuiMessage("Disconnected");
+          if(isLoggedIn){
+            isLoggedIn = false;
+            displayGuiMessage("Logged out");
+            running = false;
+            displayGuiMessage("Disconnected");
+          } else {
+            displayGuiMessage("Tried to logout while not logged in");
+            running = false;
+            displayGuiMessage("Disconnected");
+          }
           break;
          case WHOISIN:
            if(isLoggedIn){
@@ -88,6 +100,8 @@ public class ClientThread extends Thread{
              displayGuiMessage("Sent WHOISIN request");
            } else {
              displayGuiMessage("Tried to send a WHOISIN request while not logged in");
+             running = false;
+             displayGuiMessage("Disconnected");
            }
            break;
       }
@@ -118,12 +132,16 @@ public class ClientThread extends Thread{
       @Override
       public void run() {
         String inetAddress = socket.getInetAddress().toString();
+        inetAddress.replace("\\", "");
         if(getUsername() != null){
           if(!getUsername().isEmpty()){
-            gui.displayMessage(inetAddress + "|" + "username", message);
+            gui.displayMessage(inetAddress + " | " + getUsername(), message);
+          } else {
+            gui.displayMessage(inetAddress, message);
           }
+        } else {
+          gui.displayMessage(inetAddress, message);
         }
-        gui.displayMessage(inetAddress, message);
       }
     });
   }

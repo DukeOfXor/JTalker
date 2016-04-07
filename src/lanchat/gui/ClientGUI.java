@@ -16,6 +16,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import lanchat.client.Client;
 
 public class ClientGUI extends Application{
   
@@ -29,6 +31,11 @@ public class ClientGUI extends Application{
   private TextField textFieldAddress;
   private Label labelUsername;
   private TextField textFieldUsername;
+  private Client client;
+  private Label labelError;
+  private Button buttonConnect;
+  private StackPane stackPaneButtonWrapper;
+  private VBox vBoxLoginForm;
 
   @Override
   public void start(Stage primaryStage) throws Exception {
@@ -40,6 +47,18 @@ public class ClientGUI extends Application{
     primaryStage.setTitle("LanChat-Client");
     primaryStage.setMinWidth(500);
     primaryStage.setMinHeight(500);
+    primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+
+      @Override
+      public void handle(WindowEvent event) {
+        client.disconnect();
+        try {
+          client.join();
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
+    });
     
     labelAddress = new Label("Address");
     labelAddress.getStyleClass().add("label-login");
@@ -74,7 +93,7 @@ public class ClientGUI extends Application{
       }
     });
     
-    Button buttonConnect = new Button("Connect");
+    buttonConnect = new Button("Connect");
     buttonConnect.getStyleClass().add("button-login");
     buttonConnect.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
@@ -84,13 +103,16 @@ public class ClientGUI extends Application{
       }
     });
     
-    StackPane stackPaneButtonWrapper = new StackPane(buttonConnect);
+    stackPaneButtonWrapper = new StackPane(buttonConnect);
     stackPaneButtonWrapper.getStyleClass().add("stack-pane-login");
     
-    VBox vBoxLoginForm = new VBox();
+    labelError = new Label();
+    labelError.getStyleClass().add("label-login-error");
+    
+    vBoxLoginForm = new VBox();
     vBoxLoginForm.getStyleClass().add("vbox-login");
     
-    vBoxLoginForm.getChildren().addAll(labelAddress, textFieldAddress,labelUsername, textFieldUsername, stackPaneButtonWrapper);
+    vBoxLoginForm.getChildren().addAll(labelAddress, textFieldAddress,labelUsername, textFieldUsername, stackPaneButtonWrapper, labelError);
     vBoxLoginForm.setAlignment(Pos.CENTER);
 
     rootPane.setCenter(vBoxLoginForm);
@@ -99,7 +121,15 @@ public class ClientGUI extends Application{
   }
 
   protected void connect(String ip, String username) {
+    String[] split = ip.split(":");
+    String address = split[0];
+    int port = 8954;
+    if(split.length == 2){
+      Integer.parseInt(split[1]);
+    }
     
+    client = new Client(split[0], port, username, this);
+    client.start();
   }
 
   protected boolean isValidUsername(String username) {
@@ -113,6 +143,8 @@ public class ClientGUI extends Application{
   private void validateInputs() {
     String ip = textFieldAddress.getText();
     String username = textFieldUsername.getText();
+    
+    setLoginErrorText("");
     
     if(isValidIp(ip)){
       textFieldAddress.getStyleClass().removeAll("text-field-login-invalid");
@@ -129,5 +161,9 @@ public class ClientGUI extends Application{
     if(isValidIp(ip) && isValidUsername(username)){
       connect(ip, username);
     }
+  }
+  
+  public void setLoginErrorText(String errorMessage){
+    labelError.setText(errorMessage);
   }
 }
