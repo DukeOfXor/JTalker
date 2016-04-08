@@ -7,19 +7,37 @@ import java.net.SocketException;
 import java.util.ArrayList;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
+import lanchat.common.message.servertoclient.ClientListServerMessage;
 import lanchat.gui.ServerGUI;
 
 public class Server extends Thread{
 
   private Boolean running = false;
   private ServerGUI gui;
-  private ArrayList<ClientThread> connectedClients = new ArrayList<ClientThread>();
+  private ObservableList<ClientThread> connectedClients = FXCollections.observableArrayList();
   private ServerSocket serverSocket;
   
   public static final int PORT = 8954;
   
   public Server(ServerGUI gui) {
     this.gui = gui;
+    
+    connectedClients.addListener(new ListChangeListener<ClientThread>() {
+
+      @Override
+      public void onChanged(javafx.collections.ListChangeListener.Change<? extends ClientThread> c) {
+        if(running){
+          ArrayList<String> usernames = new ArrayList<>();
+          for (ClientThread clientThread : connectedClients) {
+            usernames.add(clientThread.getUsername());
+          }
+          broadcast(new ClientListServerMessage(usernames));
+        }
+      }
+    });
   }
   
   @Override
@@ -115,7 +133,7 @@ public class Server extends Thread{
     });
   }
 
-  public ArrayList<ClientThread> getConnectedClients() {
+  public ObservableList<ClientThread> getConnectedClients() {
     return connectedClients;
   }
 }
