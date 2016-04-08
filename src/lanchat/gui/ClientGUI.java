@@ -24,6 +24,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import lanchat.client.Client;
+import lanchat.common.ClientMessage;
+import lanchat.common.ClientMessageType;
 
 public class ClientGUI extends Application{
   
@@ -150,7 +152,12 @@ public class ClientGUI extends Application{
 
       @Override
       public void handle(KeyEvent event) {
-         //TODO send client message
+         if(event.getCode().equals(KeyCode.ENTER)){
+           if(client != null){
+             client.sendMessage(textFieldChatInput.getText());
+             textFieldChatInput.clear();
+           }
+         }
       }
     });
     

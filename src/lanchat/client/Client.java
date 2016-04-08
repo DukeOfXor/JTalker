@@ -150,4 +150,12 @@ public class Client extends Thread{
   public String getServerIp() {
     return socket.getInetAddress().toString().replace("/", "");
   }
+
+  public void sendMessage(String text) {
+    try {
+      getOutputStream().writeObject(new ClientMessage(ClientMessageType.MESSAGE, username, text));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 }
