@@ -35,7 +35,13 @@ public class MessageListener extends Thread{
             //TODO update gui (display message)
             break;
           case CLIENTLIST:
-            //TODO update gui (update clientlist)
+            Platform.runLater(new Runnable() {
+              
+              @Override
+              public void run() {
+                gui.setClientList(usernames);
+              }
+            });
             break;
         }
       } catch (ClassNotFoundException e) {
