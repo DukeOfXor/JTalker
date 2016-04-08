@@ -155,10 +155,7 @@ public class ClientGUI extends Application{
       @Override
       public void handle(KeyEvent event) {
          if(event.getCode().equals(KeyCode.ENTER)){
-           if(client != null){
-             client.sendMessage(textFieldChatInput.getText());
-             textFieldChatInput.clear();
-           }
+           sendMessage();
          }
       }
     });
@@ -251,5 +248,17 @@ public class ClientGUI extends Application{
   
   public void setLoginErrorText(String errorMessage){
     labelError.setText(errorMessage);
+  }
+
+  private void sendMessage() {
+    String message = textFieldChatInput.getText();
+    if(message.isEmpty()){
+      return;
+    }
+    if(client == null){
+      return;
+    }
+    client.sendMessage(textFieldChatInput.getText());
+    textFieldChatInput.clear();
   }
 }
