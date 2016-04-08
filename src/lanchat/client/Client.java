@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 
 import javafx.application.Platform;
 import lanchat.common.ClientMessage;
@@ -44,7 +45,7 @@ public class Client extends Thread{
       return;
     }
     
-    messageListener = new MessageListener(this);
+    messageListener = new MessageListener(this, gui);
     messageListener.start();
     
     try {
@@ -56,7 +57,7 @@ public class Client extends Thread{
       return;
     }
     
-    startChatView();
+    startGuiChatView();
   }
 
   private void displayLoginErrorMessage(String errorMessage) {
@@ -69,19 +70,16 @@ public class Client extends Thread{
     });
   }
   
-  private void startChatView(){
-    Platform.runLater(new Runnable() {
-      
-      @Override
-      public void run() {
-        gui.startChatView();
-      }
-    });
-  }
   public void logout(){
     try {
-      getOutputStream().writeObject(new ClientMessage(ClientMessageType.LOGOUT, "", ""));
-    } catch (IOException e) {
+      if(getOutputStream() != null){
+        if(!socket.isClosed() && socket.isConnected()){
+          getOutputStream().writeObject(new ClientMessage(ClientMessageType.LOGOUT, "", ""));
+        }
+      }
+    } catch (SocketException e){
+      //This will throw if the server closes the connection
+    }catch (IOException e) {
       e.printStackTrace();
     }
   }
@@ -107,7 +105,29 @@ public class Client extends Thread{
       } catch (IOException e) {}
       
       messageListener.shutdown();
-      //TODO update gui (switch back to login view)
+      
+      startGuiLoginView("Connection to server lost");
+  }
+
+  private void startGuiChatView(){
+    Platform.runLater(new Runnable() {
+      
+      @Override
+      public void run() {
+        gui.startChatView();
+      }
+    });
+  }
+  
+  private void startGuiLoginView(String reason) {
+    Platform.runLater(new Runnable() {
+      
+      @Override
+      public void run() {
+        gui.startLoginView();
+        gui.setLoginErrorText(reason);
+      }
+    });
   }
 
   public ObjectInputStream getInputStream() {

@@ -6,9 +6,7 @@ import java.util.regex.Pattern;
 import javafx.application.Application;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -183,6 +181,10 @@ public class ClientGUI extends Application{
   public void startChatView(){
     labelServerIp.setText(client.getServerIp());
     scene.setRoot(rootPaneChat);
+  }
+  
+  public void startLoginView(){
+    scene.setRoot(rootPaneLogin);
   }
   
   public void setClientList(ArrayList<String> clientList){

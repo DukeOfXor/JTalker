@@ -3,16 +3,20 @@ package lanchat.client;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javafx.application.Platform;
 import lanchat.common.ServerMessage;
 import lanchat.common.ServerMessageType;
+import lanchat.gui.ClientGUI;
 
 public class MessageListener extends Thread{
 
   private Client client;
   private boolean running;
+  private ClientGUI gui;
 
-  public MessageListener(Client client) {
+  public MessageListener(Client client, ClientGUI gui) {
     this.client = client;
+    this.gui = gui;
   }
   
   public void run() {
@@ -38,12 +42,24 @@ public class MessageListener extends Thread{
         //can't do anything if class is not found
       } catch (IOException e) {
        //server has closed the connection
-        //TODO update gui (switch back to login view)
+        startGuiLoginView("Connection to server lost");
+        break;
       }
     }
   }
 
   public void shutdown() {
     running = false;
+  }
+  
+  private void startGuiLoginView(String reason) {
+    Platform.runLater(new Runnable() {
+      
+      @Override
+      public void run() {
+        gui.startLoginView();
+        gui.setLoginErrorText(reason);
+      }
+    });
   }
 }
