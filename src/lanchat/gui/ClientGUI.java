@@ -255,7 +255,7 @@ public class ClientGUI extends Application{
     if(client == null){
       return;
     }
-    client.sendMessage(textFieldChatInput.getText());
+    client.sendTextMessage(textFieldChatInput.getText());
     textFieldChatInput.clear();
   }
 }

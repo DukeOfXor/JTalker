@@ -7,8 +7,9 @@ import java.net.Socket;
 import java.net.SocketException;
 
 import javafx.application.Platform;
-import lanchat.common.ClientMessage;
-import lanchat.common.ClientMessageType;
+import lanchat.common.message.LoginMessage;
+import lanchat.common.message.LogoutMessage;
+import lanchat.common.message.TextMessage;
 import lanchat.gui.ClientGUI;
 
 public class Client extends Thread{
@@ -49,7 +50,7 @@ public class Client extends Thread{
     messageListener.start();
     
     try {
-      getOutputStream().writeObject(new ClientMessage(ClientMessageType.LOGIN, username, ""));
+      getOutputStream().writeObject(new LoginMessage(username));
     } catch (IOException e) {
       e.printStackTrace();
       disconnect();
@@ -65,7 +66,7 @@ public class Client extends Thread{
     try {
       if(getOutputStream() != null){
         if(!socket.isClosed() && socket.isConnected()){
-          getOutputStream().writeObject(new ClientMessage(ClientMessageType.LOGOUT, "", ""));
+          getOutputStream().writeObject(new LogoutMessage());
         }
       }
     } catch (SocketException e){
@@ -151,9 +152,9 @@ public class Client extends Thread{
     return socket.getInetAddress().toString().replace("/", "");
   }
 
-  public void sendMessage(String text) {
+  public void sendTextMessage(String text) {
     try {
-      getOutputStream().writeObject(new ClientMessage(ClientMessageType.MESSAGE, username, text));
+      getOutputStream().writeObject(new TextMessage(text));
     } catch (IOException e) {
       e.printStackTrace();
     }
