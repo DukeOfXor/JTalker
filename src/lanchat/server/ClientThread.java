@@ -131,8 +131,7 @@ public class ClientThread extends Thread{
       
       @Override
       public void run() {
-        String inetAddress = socket.getInetAddress().toString();
-        inetAddress.replace("\\", "");
+        String inetAddress = socket.getInetAddress().toString().replace("/", "");
         if(getUsername() != null){
           if(!getUsername().isEmpty()){
             gui.displayMessage(inetAddress + "][" + getUsername(), message);
