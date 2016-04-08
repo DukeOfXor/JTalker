@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -144,6 +145,7 @@ public class ClientGUI extends Application{
     
     textAreaChatOutput = new TextArea();
     textAreaChatOutput.setEditable(false);
+    textAreaChatOutput.setWrapText(true);
     textAreaChatOutput.getStyleClass().add("text-area-chat-output");
     
     textFieldChatInput = new TextField();
