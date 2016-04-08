@@ -46,11 +46,13 @@ public class ClientThread extends Thread{
       try {
         receivedObject = inputStream.readObject();
       } catch (ClassNotFoundException e) {
+        server.removeClient(this);
         shutdown();
         break;
       } catch (IOException e) {
         //this will throw if a client disconnects
         displayGuiMessage("Disconnected without logging out");
+        server.removeClient(this);
         shutdown();
         break;
       }
@@ -106,13 +108,11 @@ public class ClientThread extends Thread{
         continue;
       }
     }
-    
     server.removeClient(this);
     shutdown();
   }
-
+  
   public void shutdown() {
-    server.removeClient(this);
       try {
         if(inputStream != null){
         inputStream.close();
@@ -173,5 +173,9 @@ public class ClientThread extends Thread{
 
   public String getUsername() {
     return username;
+  }
+
+  public String getIp() {
+    return socket.getInetAddress().getHostAddress();
   }
 }

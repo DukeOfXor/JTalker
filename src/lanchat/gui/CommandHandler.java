@@ -1,5 +1,7 @@
 package lanchat.gui;
 
+import javafx.collections.ObservableList;
+import lanchat.server.ClientThread;
 import lanchat.server.Server;
 
 public class CommandHandler {
@@ -12,6 +14,7 @@ public class CommandHandler {
   public static final String STOP_USAGE = "stop";
   public static final String CLEAR_USAGE = "clear";
   public static final String EXIT_USAGE = "exit";
+  public static final String LIST_USAGE = "list";
   
   private ServerGUI gui;
 
@@ -23,19 +26,47 @@ public class CommandHandler {
     String[] cmd = command.split("\\s+");
     if(cmd[0].equals("start")){
       startServer(cmd);
+      return;
     }
     if(cmd[0].equals("stop")){
       stopServer(cmd);
+      return;
     }
     if(cmd[0].equals("clear")){
       clearConsole(cmd);
+      return;
     }
     if(cmd[0].equals("exit")){
       exit(cmd);
+      return;
+    }
+    if(cmd[0].equals("list")){
+      clientList(cmd);
+      return;
     }
   }
   
 
+
+  private void clientList(String[] cmd) {
+    if(cmd.length > 1){
+      gui.displayMessage(TO_MANY_ARGUMENTS + cmd[0] + "\n" + USAGE + LIST_USAGE);
+      return;
+    }
+    if(gui.getLanChatServer().isRunning()){
+      ObservableList<ClientThread> connectedClients = gui.getLanChatServer().getConnectedClients();
+      StringBuilder output = new StringBuilder("Connected clients:");
+      for (ClientThread clientThread : connectedClients) {
+        output.append("\n");
+        output.append(clientThread.getIp() + ", ");
+        output.append(clientThread.getUsername());
+      }
+      
+      gui.displayMessage(output.toString());
+    } else {
+      gui.displayMessage("Please start the server before you execute this command");
+    }
+  }
 
   private void startServer(String[] cmd){
     if(cmd.length > 1){
