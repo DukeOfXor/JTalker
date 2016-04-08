@@ -1,6 +1,6 @@
 package lanchat.gui;
 
-import lanchat.server.LanChatServer;
+import lanchat.server.Server;
 
 public class CommandHandler {
   
@@ -43,7 +43,7 @@ public class CommandHandler {
       return;
     }
     if(!gui.getLanChatServer().isRunning()){
-      gui.setLanChatServer(new LanChatServer(gui));
+      gui.setLanChatServer(new Server(gui));
       gui.getLanChatServer().start();
     } else {
       gui.displayMessage("Server already running");

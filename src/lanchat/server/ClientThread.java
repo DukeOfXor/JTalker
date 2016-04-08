@@ -20,11 +20,11 @@ public class ClientThread extends Thread{
   private ObjectOutputStream outputStream;
   private ServerGUI gui;
   private ClientMessage clientMessage;
-  private LanChatServer server;
+  private Server server;
   private String username;
   private boolean isLoggedIn;
 
-  public ClientThread(Socket socket, ServerGUI gui, LanChatServer server) {
+  public ClientThread(Socket socket, ServerGUI gui, Server server) {
     this.socket = socket;
     this.gui = gui;
     this.server = server;

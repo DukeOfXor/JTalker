@@ -20,11 +20,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import lanchat.server.LanChatServer;
+import lanchat.server.Server;
 
 public class ServerGUI extends Application{
 
-  private LanChatServer lanChatServer;
+  private Server lanChatServer;
   private final ServerGUI gui = this;
   private BorderPane rootPane;
   private Label labelAddress;
@@ -38,7 +38,7 @@ public class ServerGUI extends Application{
   @Override
   public void start(Stage primaryStage) throws Exception {
     this.primaryStage = primaryStage;
-    setLanChatServer(new LanChatServer(gui));
+    setLanChatServer(new Server(gui));
     cmdHandler = new CommandHandler(gui);
     simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
     
@@ -80,7 +80,7 @@ public class ServerGUI extends Application{
     textAreaLog.setWrapText(true);
     textAreaLog.getStyleClass().add("text-area-log");
     
-    labelAddress = new Label(Inet4Address.getLocalHost().getHostAddress() + ":" + LanChatServer.PORT);
+    labelAddress = new Label(Inet4Address.getLocalHost().getHostAddress() + ":" + Server.PORT);
     labelAddress.getStyleClass().add("title");
     
     wrapperTop = new StackPane();
@@ -131,11 +131,11 @@ public class ServerGUI extends Application{
     textAreaLog.appendText("\n");
   }
 
-  public LanChatServer getLanChatServer() {
+  public Server getLanChatServer() {
     return lanChatServer;
   }
 
-  public void setLanChatServer(LanChatServer lanChatServer) {
+  public void setLanChatServer(Server lanChatServer) {
     this.lanChatServer = lanChatServer;
   }
 

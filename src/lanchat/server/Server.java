@@ -12,7 +12,7 @@ import javafx.application.Platform;
 import lanchat.common.ServerMessage;
 import lanchat.gui.ServerGUI;
 
-public class LanChatServer extends Thread{
+public class Server extends Thread{
 
   private Boolean running = false;
   private ServerGUI gui;
@@ -21,7 +21,7 @@ public class LanChatServer extends Thread{
   
   public static final int PORT = 8954;
   
-  public LanChatServer(ServerGUI gui) {
+  public Server(ServerGUI gui) {
     this.gui = gui;
   }
   
@@ -46,9 +46,15 @@ public class LanChatServer extends Thread{
         clientThread.start();
       }
     } catch (SocketException e1) {
-      //serverSocket.accept() will throw an exception because the socket gets closed, while its waiting for connections
-      //this can't be prevented, therefore the exception is ignored
-     if(!e1.getMessage().equals("socket closed")){
+
+     if(e1.getMessage().equals("socket closed")){
+       //serverSocket.accept() will throw this exception because the socket gets closed, while its waiting for connections
+       //this can't be prevented, therefore the exception is ignored
+     } else if(e1.getMessage().equals("Address already in use: JVM_Bind")){
+       //an exception with this message gets thrown if the address is already in use, i.e. when there is already a server running on this pc
+       displayGuiMessage("Can't start server. Maybe there is already a server running on this computer?");
+     } else {
+       e1.printStackTrace();
      }
     }
     catch (IOException e2) {
