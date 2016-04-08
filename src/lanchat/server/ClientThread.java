@@ -46,13 +46,11 @@ public class ClientThread extends Thread{
       try {
         receivedObject = inputStream.readObject();
       } catch (ClassNotFoundException e) {
-        server.removeClient(this);
         shutdown();
         break;
       } catch (IOException e) {
         //this will throw if a client disconnects
         displayGuiMessage("Disconnected without logging out");
-        server.removeClient(this);
         shutdown();
         break;
       }
@@ -65,6 +63,7 @@ public class ClientThread extends Thread{
         
         this.username = loginMessage.getUsername();
         isLoggedIn = true;
+        server.addClient(this);
         displayGuiMessage("Logged in");
         continue;
       }
@@ -75,6 +74,7 @@ public class ClientThread extends Thread{
         //LogoutMessage
         if(receivedObject.getClass().equals(LogoutClientMessage.class)){
             isLoggedIn = false;
+            server.removeClient(this);
             displayGuiMessage("Logged out");
             running = false;
             displayGuiMessage("Disconnected");
@@ -91,14 +91,12 @@ public class ClientThread extends Thread{
         
         //WhoisinMessage
        if(receivedObject.getClass().equals(WhoisinClientMessage.class)){
-         ArrayList<String> clientList = new ArrayList<>();
-         for (ClientThread clientThread : server.getClientList()) {
-           if(clientThread.isLoggedIn()){
-             clientList.add(clientThread.getUsername());
-           }
+         ArrayList<String> usernameList = new ArrayList<>();
+         for (ClientThread client : server.getConnectedClients()) {
+          usernameList.add(client.getUsername());
          }
          
-         ClientListServerMessage clientListMessage = new ClientListServerMessage(clientList);
+         ClientListServerMessage clientListMessage = new ClientListServerMessage(usernameList);
          writeMessage(clientListMessage);
          displayGuiMessage("Sent WhoisinMessage");
        }
@@ -114,6 +112,7 @@ public class ClientThread extends Thread{
   }
 
   public void shutdown() {
+    server.removeClient(this);
       try {
         if(inputStream != null){
         inputStream.close();

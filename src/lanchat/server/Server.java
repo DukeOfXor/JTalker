@@ -13,7 +13,7 @@ public class Server extends Thread{
 
   private Boolean running = false;
   private ServerGUI gui;
-  private ArrayList<ClientThread> clientList = new ArrayList<ClientThread>();
+  private ArrayList<ClientThread> connectedClients = new ArrayList<ClientThread>();
   private ServerSocket serverSocket;
   
   public static final int PORT = 8954;
@@ -39,7 +39,6 @@ public class Server extends Thread{
           break;
         }
         ClientThread clientThread = new ClientThread(socket, gui, this);
-        getClientList().add(clientThread);
         clientThread.start();
       }
     } catch (SocketException e1) {
@@ -60,23 +59,18 @@ public class Server extends Thread{
   }
   
   synchronized void broadcast(Object message){
-    int removedClientsCounter = 0;
-    for (ClientThread clientThread : getClientList()) {
-      if(clientThread.isConnected()){
+    for (ClientThread clientThread : getConnectedClients()) {
         clientThread.writeMessage(message);
-      } else {
-        removeClient(clientThread);
-        removedClientsCounter++;
-      }
     }
     
-    if(removedClientsCounter > 0){
-      displayGuiMessage("Removed " + removedClientsCounter + " clients, which were not properly disconnected");
-    }
+  }
+  
+  synchronized void addClient(ClientThread clientThreadToAdd){
+    getConnectedClients().add(clientThreadToAdd);
   }
   
   synchronized void removeClient(ClientThread clientThreadToRemove){
-        getClientList().remove(clientThreadToRemove);
+        getConnectedClients().remove(clientThreadToRemove);
   }
   
   public void shutdown(){
@@ -85,7 +79,7 @@ public class Server extends Thread{
       if(serverSocket != null){
         serverSocket.close();
       }
-      for (ClientThread clientThread : getClientList()) {
+      for (ClientThread clientThread : getConnectedClients()) {
         clientThread.shutdown();
       }
       running = false;
@@ -120,22 +114,8 @@ public class Server extends Thread{
       }
     });
   }
-  
-  private void displayGuiMessage(String prefix, String message){
-    Platform.runLater(new Runnable() {
-      
-      @Override
-      public void run() {
-        gui.displayMessage(prefix, message);
-      }
-    });
-  }
 
-  public ArrayList<ClientThread> getClientList() {
-    return clientList;
-  }
-
-  private void setClientList(ArrayList<ClientThread> clientList) {
-    this.clientList = clientList;
+  public ArrayList<ClientThread> getConnectedClients() {
+    return connectedClients;
   }
 }
