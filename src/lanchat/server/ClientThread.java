@@ -7,12 +7,12 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import javafx.application.Platform;
-import lanchat.common.ServerMessage;
-import lanchat.common.ServerMessageType;
-import lanchat.common.message.LoginMessage;
-import lanchat.common.message.LogoutMessage;
-import lanchat.common.message.TextMessage;
-import lanchat.common.message.WhoisinMessage;
+import lanchat.common.message.clienttoserver.LoginMessageClient;
+import lanchat.common.message.clienttoserver.LogoutMessageClient;
+import lanchat.common.message.clienttoserver.TextMessageClient;
+import lanchat.common.message.clienttoserver.WhoisinMessageClient;
+import lanchat.common.message.servertoclient.ClientlistMessageServer;
+import lanchat.common.message.servertoclient.TextMessageServer;
 import lanchat.gui.ServerGUI;
 
 public class ClientThread extends Thread{
@@ -60,8 +60,8 @@ public class ClientThread extends Thread{
       //The following messages from the client get handled, even if the client is not logged in
       
       //LoginMessage
-      if(receivedObject.getClass().equals(LoginMessage.class)){
-        LoginMessage loginMessage = (LoginMessage) receivedObject;
+      if(receivedObject.getClass().equals(LoginMessageClient.class)){
+        LoginMessageClient loginMessage = (LoginMessageClient) receivedObject;
         
         this.username = loginMessage.getUsername();
         isLoggedIn = true;
@@ -73,7 +73,7 @@ public class ClientThread extends Thread{
       //If a not logged in client sends such a message, he will be disconnected
       if(isLoggedIn){
         //LogoutMessage
-        if(receivedObject.getClass().equals(LogoutMessage.class)){
+        if(receivedObject.getClass().equals(LogoutMessageClient.class)){
             isLoggedIn = false;
             displayGuiMessage("Logged out");
             running = false;
@@ -82,15 +82,15 @@ public class ClientThread extends Thread{
           }
         
         //TextMessage
-        if(receivedObject.getClass().equals(TextMessage.class)){
-          TextMessage textMessage = (TextMessage) receivedObject;
+        if(receivedObject.getClass().equals(TextMessageClient.class)){
+          TextMessageClient textMessage = (TextMessageClient) receivedObject;
           
-          server.broadcast(new ServerMessage(ServerMessageType.MESSAGE, this.username, textMessage.getText()));
+          server.broadcast(new TextMessageServer(username, textMessage.getText()));
           displayGuiMessage("Sent TextMessage: " + textMessage.getText());
         }
         
         //WhoisinMessage
-       if(receivedObject.getClass().equals(WhoisinMessage.class)){
+       if(receivedObject.getClass().equals(WhoisinMessageClient.class)){
          ArrayList<String> clientList = new ArrayList<>();
          for (ClientThread clientThread : server.getClientList()) {
            if(clientThread.isLoggedIn()){
@@ -98,8 +98,8 @@ public class ClientThread extends Thread{
            }
          }
          
-         ServerMessage serverMessage = new ServerMessage(ServerMessageType.CLIENTLIST, clientList);
-         writeMessage(serverMessage);
+         ClientlistMessageServer clientlistMessageServer = new ClientlistMessageServer(clientList);
+         writeMessage(clientlistMessageServer);
          displayGuiMessage("Sent WhoisinMessage");
        }
       } else {
@@ -206,7 +206,7 @@ public class ClientThread extends Thread{
     }
   }
 
-  public void writeMessage(ServerMessage message) {
+  public void writeMessage(Object message) {
     try {
       outputStream.writeObject(message);
     } catch (IOException e) {

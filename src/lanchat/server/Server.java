@@ -7,7 +7,8 @@ import java.net.SocketException;
 import java.util.ArrayList;
 
 import javafx.application.Platform;
-import lanchat.common.ServerMessage;
+import lanchat.common.message.servertoclient.ClientlistMessageServer;
+import lanchat.common.message.servertoclient.TextMessageServer;
 import lanchat.gui.ServerGUI;
 
 public class Server extends Thread{
@@ -60,7 +61,7 @@ public class Server extends Thread{
     }
   }
   
-  synchronized void broadcast(ServerMessage message){
+  synchronized void broadcast(Object message){
     int removedClientsCounter = 0;
     for (ClientThread clientThread : getClientList()) {
       if(clientThread.isConnected()){

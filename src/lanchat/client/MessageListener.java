@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javafx.application.Platform;
-import lanchat.common.ServerMessage;
-import lanchat.common.ServerMessageType;
+import lanchat.common.message.servertoclient.ClientlistMessageServer;
+import lanchat.common.message.servertoclient.TextMessageServer;
 import lanchat.gui.ClientGUI;
 
 public class MessageListener extends Thread{
@@ -23,21 +23,31 @@ public class MessageListener extends Thread{
     running = true;
     while(running ){
       try {
-        ServerMessage serverMessage = (ServerMessage) client.getInputStream().readObject();
+        Object receivedObject = client.getInputStream().readObject();
         
-        ServerMessageType type = serverMessage.getType();
-        String message = serverMessage.getMessage();
-        String username = serverMessage.getUsername();
-        ArrayList<String> usernames = serverMessage.getUsernames();
-        
-        switch (type) {
-          case MESSAGE:
-            displayGuiMessage(username, message);
-            break;
-          case CLIENTLIST:
-            displayGuiClientlist(usernames);
-            break;
+        //TextMessage
+        if(receivedObject.getClass().equals(TextMessageServer.class)){
+          TextMessageServer textMessageServer = (TextMessageServer) receivedObject;
+          
+          displayGuiMessage(textMessageServer.getUsername(), textMessageServer.getText());
+          continue;
         }
+        
+        //ClientlistMessage
+        if(receivedObject.getClass().equals(ClientlistMessageServer.class)){
+          ClientlistMessageServer clientlistMessageServer = (ClientlistMessageServer) receivedObject;
+          
+          displayGuiClientlist(clientlistMessageServer.getClientlist());
+        }
+//        switch (type) {
+//          case MESSAGE:
+//            displayGuiMessage(username, message);
+//            break;
+//          case CLIENTLIST:
+//            displayGuiClientlist(usernames);
+//            break;
+//        }
+        
       } catch (ClassNotFoundException e) {
         //can't do anything if class is not found
       } catch (IOException e) {
