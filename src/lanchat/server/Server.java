@@ -7,8 +7,6 @@ import java.net.SocketException;
 import java.util.ArrayList;
 
 import javafx.application.Platform;
-import lanchat.common.message.servertoclient.ClientlistMessageServer;
-import lanchat.common.message.servertoclient.TextMessageServer;
 import lanchat.gui.ServerGUI;
 
 public class Server extends Thread{

@@ -2,12 +2,12 @@ package lanchat.common.message.clienttoserver;
 
 import java.io.Serializable;
 
-public class LoginMessageClient implements Serializable{
+public class LoginClientMessage implements Serializable{
 
   private static final long serialVersionUID = -5570709010741836768L;
   private String username;
 
-  public LoginMessageClient(String username) {
+  public LoginClientMessage(String username) {
     setUsername(username);
   }
 

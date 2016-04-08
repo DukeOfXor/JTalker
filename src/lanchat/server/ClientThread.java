@@ -7,12 +7,12 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import javafx.application.Platform;
-import lanchat.common.message.clienttoserver.LoginMessageClient;
-import lanchat.common.message.clienttoserver.LogoutMessageClient;
-import lanchat.common.message.clienttoserver.TextMessageClient;
-import lanchat.common.message.clienttoserver.WhoisinMessageClient;
-import lanchat.common.message.servertoclient.ClientlistMessageServer;
-import lanchat.common.message.servertoclient.TextMessageServer;
+import lanchat.common.message.clienttoserver.LoginClientMessage;
+import lanchat.common.message.clienttoserver.LogoutClientMessage;
+import lanchat.common.message.clienttoserver.TextClientMessage;
+import lanchat.common.message.clienttoserver.WhoisinClientMessage;
+import lanchat.common.message.servertoclient.ClientListServerMessage;
+import lanchat.common.message.servertoclient.TextServerMessage;
 import lanchat.gui.ServerGUI;
 
 public class ClientThread extends Thread{
@@ -60,8 +60,8 @@ public class ClientThread extends Thread{
       //The following messages from the client get handled, even if the client is not logged in
       
       //LoginMessage
-      if(receivedObject.getClass().equals(LoginMessageClient.class)){
-        LoginMessageClient loginMessage = (LoginMessageClient) receivedObject;
+      if(receivedObject.getClass().equals(LoginClientMessage.class)){
+        LoginClientMessage loginMessage = (LoginClientMessage) receivedObject;
         
         this.username = loginMessage.getUsername();
         isLoggedIn = true;
@@ -73,7 +73,7 @@ public class ClientThread extends Thread{
       //If a not logged in client sends such a message, he will be disconnected
       if(isLoggedIn){
         //LogoutMessage
-        if(receivedObject.getClass().equals(LogoutMessageClient.class)){
+        if(receivedObject.getClass().equals(LogoutClientMessage.class)){
             isLoggedIn = false;
             displayGuiMessage("Logged out");
             running = false;
@@ -82,15 +82,15 @@ public class ClientThread extends Thread{
           }
         
         //TextMessage
-        if(receivedObject.getClass().equals(TextMessageClient.class)){
-          TextMessageClient textMessage = (TextMessageClient) receivedObject;
+        if(receivedObject.getClass().equals(TextClientMessage.class)){
+          TextClientMessage textMessage = (TextClientMessage) receivedObject;
           
-          server.broadcast(new TextMessageServer(username, textMessage.getText()));
+          server.broadcast(new TextServerMessage(username, textMessage.getText()));
           displayGuiMessage("Sent TextMessage: " + textMessage.getText());
         }
         
         //WhoisinMessage
-       if(receivedObject.getClass().equals(WhoisinMessageClient.class)){
+       if(receivedObject.getClass().equals(WhoisinClientMessage.class)){
          ArrayList<String> clientList = new ArrayList<>();
          for (ClientThread clientThread : server.getClientList()) {
            if(clientThread.isLoggedIn()){
@@ -98,8 +98,8 @@ public class ClientThread extends Thread{
            }
          }
          
-         ClientlistMessageServer clientlistMessageServer = new ClientlistMessageServer(clientList);
-         writeMessage(clientlistMessageServer);
+         ClientListServerMessage clientListMessage = new ClientListServerMessage(clientList);
+         writeMessage(clientListMessage);
          displayGuiMessage("Sent WhoisinMessage");
        }
       } else {
@@ -107,52 +107,6 @@ public class ClientThread extends Thread{
         displayGuiMessage("Disconnected");
         continue;
       }
-//      switch (type) {
-//        case MESSAGE:
-//          if(isLoggedIn){
-//            server.broadcast(new ServerMessage(ServerMessageType.MESSAGE, this.username, message));
-//            displayGuiMessage("Sent message: " + message);
-//          } else {
-//            displayGuiMessage("Tried to send a message while not logged in");
-//            running = false;
-//            displayGuiMessage("Disconnected");
-//          }
-//          break;
-//        case LOGIN:
-//          this.username = username;
-//          isLoggedIn = true;
-//          displayGuiMessage("Logged in");
-//          break;
-//        case LOGOUT:
-//          if(isLoggedIn){
-//            isLoggedIn = false;
-//            displayGuiMessage("Logged out");
-//            running = false;
-//            displayGuiMessage("Disconnected");
-//          } else {
-//            displayGuiMessage("Tried to logout while not logged in");
-//            running = false;
-//            displayGuiMessage("Disconnected");
-//          }
-//          break;
-//         case WHOISIN:
-//           if(isLoggedIn){
-//             ArrayList<String> clientList = new ArrayList<>();
-//             for (ClientThread clientThread : server.getClientList()) {
-//               if(clientThread.isLoggedIn()){
-//                 clientList.add(clientThread.getUsername());
-//               }
-//            }
-//             ServerMessage serverMessage = new ServerMessage(ServerMessageType.CLIENTLIST, clientList);
-//             writeMessage(serverMessage);
-//             displayGuiMessage("Sent WHOISIN request");
-//           } else {
-//             displayGuiMessage("Tried to send a WHOISIN request while not logged in");
-//             running = false;
-//             displayGuiMessage("Disconnected");
-//           }
-//           break;
-//      }
     }
     
     server.removeClient(this);

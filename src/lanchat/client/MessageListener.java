@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javafx.application.Platform;
-import lanchat.common.message.servertoclient.ClientlistMessageServer;
-import lanchat.common.message.servertoclient.TextMessageServer;
+import lanchat.common.message.servertoclient.ClientListServerMessage;
+import lanchat.common.message.servertoclient.TextServerMessage;
 import lanchat.gui.ClientGUI;
 
 public class MessageListener extends Thread{
@@ -26,27 +26,19 @@ public class MessageListener extends Thread{
         Object receivedObject = client.getInputStream().readObject();
         
         //TextMessage
-        if(receivedObject.getClass().equals(TextMessageServer.class)){
-          TextMessageServer textMessageServer = (TextMessageServer) receivedObject;
+        if(receivedObject.getClass().equals(TextServerMessage.class)){
+          TextServerMessage textMessage = (TextServerMessage) receivedObject;
           
-          displayGuiMessage(textMessageServer.getUsername(), textMessageServer.getText());
+          displayGuiMessage(textMessage.getUsername(), textMessage.getText());
           continue;
         }
         
         //ClientlistMessage
-        if(receivedObject.getClass().equals(ClientlistMessageServer.class)){
-          ClientlistMessageServer clientlistMessageServer = (ClientlistMessageServer) receivedObject;
+        if(receivedObject.getClass().equals(ClientListServerMessage.class)){
+          ClientListServerMessage clientListMessage = (ClientListServerMessage) receivedObject;
           
-          displayGuiClientlist(clientlistMessageServer.getClientlist());
+          displayGuiClientlist(clientListMessage.getClientlist());
         }
-//        switch (type) {
-//          case MESSAGE:
-//            displayGuiMessage(username, message);
-//            break;
-//          case CLIENTLIST:
-//            displayGuiClientlist(usernames);
-//            break;
-//        }
         
       } catch (ClassNotFoundException e) {
         //can't do anything if class is not found
