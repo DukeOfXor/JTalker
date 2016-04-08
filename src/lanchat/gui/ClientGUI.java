@@ -1,6 +1,7 @@
 package lanchat.gui;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.regex.Pattern;
 
 import javafx.application.Application;
@@ -191,6 +192,14 @@ public class ClientGUI extends Application{
   }
   
   public void setClientList(ArrayList<String> clientList){
+    clientList.sort(new Comparator<String>() {
+
+      @Override
+      public int compare(String o1, String o2) {
+        return o1.compareTo(o2);
+      }
+    });
+    
     listPropertyClients.set(FXCollections.observableArrayList(clientList));
   }
   
