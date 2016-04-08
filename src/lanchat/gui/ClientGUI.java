@@ -51,12 +51,14 @@ public class ClientGUI extends Application{
 
       @Override
       public void handle(WindowEvent event) {
-        client.logout();
-        client.disconnect();
-        try {
-          client.join();
-        } catch (InterruptedException e) {
-          e.printStackTrace();
+        if(client != null){
+          client.logout();
+          client.disconnect();
+          try {
+            client.join();
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
         }
       }
     });
