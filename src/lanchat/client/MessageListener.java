@@ -32,16 +32,10 @@ public class MessageListener extends Thread{
         
         switch (type) {
           case MESSAGE:
-            //TODO update gui (display message)
+            displayGuiMessage(username, message);
             break;
           case CLIENTLIST:
-            Platform.runLater(new Runnable() {
-              
-              @Override
-              public void run() {
-                gui.setClientList(usernames);
-              }
-            });
+            displayGuiClientlist(usernames);
             break;
         }
       } catch (ClassNotFoundException e) {
@@ -65,6 +59,26 @@ public class MessageListener extends Thread{
       public void run() {
         gui.startLoginView();
         gui.setLoginErrorText(reason);
+      }
+    });
+  }
+  
+  private void displayGuiClientlist(ArrayList<String> clientlist){
+    Platform.runLater(new Runnable() {
+      
+      @Override
+      public void run() {
+        gui.setClientList(clientlist);
+      }
+    });
+  }
+  
+  private void displayGuiMessage(String username, String message){
+    Platform.runLater(new Runnable() {
+      
+      @Override
+      public void run() {
+        gui.displayMessage(username, message);
       }
     });
   }

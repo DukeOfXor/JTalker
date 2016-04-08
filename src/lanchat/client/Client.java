@@ -33,7 +33,7 @@ public class Client extends Thread{
     try {
       socket = new Socket(ip, port);
     } catch (Exception e) {
-      displayLoginErrorMessage("Connection failed");
+      displayGuiLoginErrorMessage("Connection failed");
       return;
     }
     
@@ -41,7 +41,7 @@ public class Client extends Thread{
       setInputStream(new ObjectInputStream(socket.getInputStream()));
       setOutputStream(new ObjectOutputStream(socket.getOutputStream()));
     } catch (IOException e) {
-      displayLoginErrorMessage("Connection failed");
+      displayGuiLoginErrorMessage("Connection failed");
       return;
     }
     
@@ -53,22 +53,13 @@ public class Client extends Thread{
     } catch (IOException e) {
       e.printStackTrace();
       disconnect();
-      displayLoginErrorMessage("Login failed");
+      displayGuiLoginErrorMessage("Login failed");
       return;
     }
     
     startGuiChatView();
   }
 
-  private void displayLoginErrorMessage(String errorMessage) {
-    Platform.runLater(new Runnable() {
-      
-      @Override
-      public void run() {
-         gui.setLoginErrorText(errorMessage);
-      }
-    });
-  }
   
   public void logout(){
     try {
@@ -109,6 +100,16 @@ public class Client extends Thread{
       startGuiLoginView("Connection to server lost");
   }
 
+  private void displayGuiLoginErrorMessage(String errorMessage) {
+    Platform.runLater(new Runnable() {
+      
+      @Override
+      public void run() {
+        gui.setLoginErrorText(errorMessage);
+      }
+    });
+  }
+  
   private void startGuiChatView(){
     Platform.runLater(new Runnable() {
       

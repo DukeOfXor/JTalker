@@ -191,6 +191,12 @@ public class ClientGUI extends Application{
     listPropertyClients.set(FXCollections.observableArrayList(clientList));
   }
   
+  public void displayMessage(String username, String message){
+    textAreaChatOutput.appendText("[" + username + "] ");
+    textAreaChatOutput.appendText(message);
+    textAreaChatOutput.appendText("\n");
+  }
+  
   protected void connect(String ip, String username) {
     String[] split = ip.split(":");
     String address = split[0];
