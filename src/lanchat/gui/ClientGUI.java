@@ -1,13 +1,21 @@
 package lanchat.gui;
 
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import javafx.application.Application;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -21,7 +29,7 @@ import lanchat.client.Client;
 
 public class ClientGUI extends Application{
   
-  private BorderPane rootPane;
+  private BorderPane rootPaneLogin;
   private static final Pattern IP_PATTERN = Pattern.compile(
       "^\\s*(.*?):(\\d+)\\s*$");
   private static final Pattern USERNAME_PATTERN = Pattern.compile("^[a-zA-Z0-9]+$");
@@ -36,16 +44,28 @@ public class ClientGUI extends Application{
   private Button buttonConnect;
   private StackPane stackPaneButtonWrapper;
   private VBox vBoxLoginForm;
+  private TextArea textAreaChatOutput;
+  private TextField textFieldChatInput;
+  private BorderPane borderPaneMainChatWrapper;
+  private Label labelServerIp;
+  private Scene scene;
+  private BorderPane rootPaneChat;
+  private BorderPane borderPaneLeftSideWrapper;
+  private ListView<String> listViewClients;
+  private ListProperty<String> listPropertyClients;
 
   @Override
   public void start(Stage primaryStage) throws Exception {
-    rootPane = new BorderPane();
+    listPropertyClients = new SimpleListProperty<>();
     
-    Scene scene = new Scene(rootPane, 500, 500);
+    rootPaneLogin = new BorderPane();
+    rootPaneChat = new BorderPane();
+    
+    scene = new Scene(rootPaneLogin, 600, 500);
     scene.getStylesheets().add(getClass().getResource("/lanchat/gui/styles.css").toExternalForm());
     primaryStage.setScene(scene);
     primaryStage.setTitle("LanChat-Client");
-    primaryStage.setMinWidth(500);
+    primaryStage.setMinWidth(600);
     primaryStage.setMinHeight(500);
     primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
@@ -118,18 +138,55 @@ public class ClientGUI extends Application{
     vBoxLoginForm.getChildren().addAll(labelAddress, textFieldAddress,labelUsername, textFieldUsername, stackPaneButtonWrapper, labelError);
     vBoxLoginForm.setAlignment(Pos.CENTER);
 
-    rootPane.setCenter(vBoxLoginForm);
+    rootPaneLogin.setCenter(vBoxLoginForm);
     
     primaryStage.show();
     
-    //chat view
-    //these components are created here, however they are only displayed if startChatView is called
+    textAreaChatOutput = new TextArea();
+    textAreaChatOutput.setEditable(false);
+    textAreaChatOutput.getStyleClass().add("text-area-chat-output");
+    
+    textFieldChatInput = new TextField();
+    textFieldChatInput.getStyleClass().add("text-field-chat-input");
+    textFieldChatInput.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+      @Override
+      public void handle(KeyEvent event) {
+         //TODO send client message
+      }
+    });
+    
+    borderPaneMainChatWrapper = new BorderPane();
+    borderPaneMainChatWrapper.setCenter(textAreaChatOutput);
+    borderPaneMainChatWrapper.setBottom(textFieldChatInput);
+    borderPaneMainChatWrapper.getStyleClass().add("border-pane-chat-main");
+    
+    labelServerIp = new Label();
+    labelServerIp.getStyleClass().add("label-chat-server-ip");
+    
+    StackPane stackPaneLabelIpWrapper = new StackPane(labelServerIp);
+    stackPaneLabelIpWrapper.getStyleClass().add("stack-pane-label-ip-wrapper");
+    
+    listViewClients = new ListView<String>();
+    listViewClients.itemsProperty().bind(listPropertyClients);
+    
+    borderPaneLeftSideWrapper = new BorderPane();
+    borderPaneLeftSideWrapper.setPrefWidth(150);
+    borderPaneLeftSideWrapper.setTop(stackPaneLabelIpWrapper);
+    borderPaneLeftSideWrapper.setCenter(listViewClients);
+    borderPaneLeftSideWrapper.getStyleClass().add("border-pane-chat-left-side-wrapper");
+    
+    rootPaneChat.setCenter(borderPaneMainChatWrapper);
+    rootPaneChat.setLeft(borderPaneLeftSideWrapper);
   }
 
   public void startChatView(){
-    rootPane.setCenter(null);
-    
-    
+    labelServerIp.setText(client.getServerIp());
+    scene.setRoot(rootPaneChat);
+  }
+  
+  public void setClientList(ArrayList<String> clientList){
+    listPropertyClients.set(FXCollections.observableArrayList(clientList));
   }
   
   protected void connect(String ip, String username) {

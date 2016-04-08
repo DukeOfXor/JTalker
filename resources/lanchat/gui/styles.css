@@ -71,5 +71,46 @@
 }
 .vbox-login{
 	-fx-background-color: white;
-	-fx-padding: 0 100 0 100;
+	-fx-padding: 0 150 0 150;
+}
+.text-area-chat-output{
+	-fx-focus-color: transparent;
+	-fx-faint-focus-color: transparent;
+	-fx-background-color: white;
+	-fx-font: 15px "Impact, Charcoal, sans-serif";
+}
+.text-field-chat-input{
+	-fx-focus-color: transparent;
+	-fx-faint-focus-color: transparent;
+	-fx-background-color: white;
+	-fx-font: 15px "Impact, Charcoal, sans-serif";
+	-fx-border-style: solid hidden hidden hidden;
+	-fx-border-width: 3px;
+	-fx-border-color: #3399ff;
+}
+.label-chat-server-ip{
+	-fx-font: 20px "Impact, Charcoal, sans-serif";
+	-fx-text-fill: #3399ff;
+}
+.stack-pane-label-ip-wrapper{
+	-fx-border-style: hidden hidden solid hidden;
+	-fx-border-width: 3px;
+	-fx-border-color: #3399ff;
+}
+.border-pane-chat-left-side-wrapper{
+	-fx-background-color: white;
+	-fx-border-style: hidden solid hidden hidden;
+	-fx-border-width: 3px;
+	-fx-border-color: #3399ff;
+}
+.list-view{
+	-fx-focus-color: transparent;
+	-fx-faint-focus-color: transparent;
+	-fx-background-insets: 0;
+}
+.list-cell{
+	-fx-text-fill: black;
+	-fx-alignment: CENTER;
+	-fx-background-color: white;
+	-fx-font: 15px "Impact, Charcoal, sans-serif";
 }

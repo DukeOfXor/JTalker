@@ -3,7 +3,6 @@ package lanchat.client;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.InetSocketAddress;
 import java.net.Socket;
 
 import javafx.application.Platform;
@@ -20,6 +19,7 @@ public class Client extends Thread{
   private ObjectInputStream inputStream;
   private ObjectOutputStream outputStream;
   private ClientGUI gui;
+  private MessageListener messageListener;
 
   public Client(String ip, int port, String username, ClientGUI gui) {
     this.ip = ip;
@@ -37,17 +37,18 @@ public class Client extends Thread{
     }
     
     try {
-      inputStream = new ObjectInputStream(socket.getInputStream());
-      outputStream = new ObjectOutputStream(socket.getOutputStream());
+      setInputStream(new ObjectInputStream(socket.getInputStream()));
+      setOutputStream(new ObjectOutputStream(socket.getOutputStream()));
     } catch (IOException e) {
       displayLoginErrorMessage("Connection failed");
       return;
     }
     
-    //TODO Start MessageListener
+    messageListener = new MessageListener(this);
+    messageListener.start();
     
     try {
-      outputStream.writeObject(new ClientMessage(ClientMessageType.LOGIN, username, ""));
+      getOutputStream().writeObject(new ClientMessage(ClientMessageType.LOGIN, username, ""));
     } catch (IOException e) {
       e.printStackTrace();
       disconnect();
@@ -79,7 +80,7 @@ public class Client extends Thread{
   }
   public void logout(){
     try {
-      outputStream.writeObject(new ClientMessage(ClientMessageType.LOGOUT, "", ""));
+      getOutputStream().writeObject(new ClientMessage(ClientMessageType.LOGOUT, "", ""));
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -88,14 +89,14 @@ public class Client extends Thread{
   public void disconnect() {
     //ignoring these exceptions, there is not much i can do here
       try {
-        if(inputStream != null){
-        inputStream.close();
+        if(getInputStream() != null){
+        getInputStream().close();
         }
       } catch (IOException e) {}
       
       try {
-        if(outputStream != null){
-          outputStream.close();
+        if(getOutputStream() != null){
+          getOutputStream().close();
         }
       } catch (IOException e) {}
       
@@ -105,6 +106,27 @@ public class Client extends Thread{
         }
       } catch (IOException e) {}
       
-      //TODO update gui
+      messageListener.shutdown();
+      //TODO update gui (switch back to login view)
+  }
+
+  public ObjectInputStream getInputStream() {
+    return inputStream;
+  }
+
+  private void setInputStream(ObjectInputStream inputStream) {
+    this.inputStream = inputStream;
+  }
+
+  public ObjectOutputStream getOutputStream() {
+    return outputStream;
+  }
+
+  private void setOutputStream(ObjectOutputStream outputStream) {
+    this.outputStream = outputStream;
+  }
+
+  public String getServerIp() {
+    return socket.getInetAddress().toString().replace("/", "");
   }
 }
