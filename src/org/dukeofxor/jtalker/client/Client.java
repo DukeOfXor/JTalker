@@ -1,4 +1,4 @@
-package org.dukeofxor.lanchat.client;
+package org.dukeofxor.jtalker.client;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -6,10 +6,10 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 
-import org.dukeofxor.lanchat.common.message.clienttoserver.LoginClientMessage;
-import org.dukeofxor.lanchat.common.message.clienttoserver.LogoutClientMessage;
-import org.dukeofxor.lanchat.common.message.clienttoserver.TextClientMessage;
-import org.dukeofxor.lanchat.gui.ClientGUI;
+import org.dukeofxor.jtalker.common.message.clienttoserver.LoginClientMessage;
+import org.dukeofxor.jtalker.common.message.clienttoserver.LogoutClientMessage;
+import org.dukeofxor.jtalker.common.message.clienttoserver.TextClientMessage;
+import org.dukeofxor.jtalker.gui.ClientGUI;
 
 import javafx.application.Platform;
 

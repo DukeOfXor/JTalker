@@ -1,10 +1,10 @@
-package org.dukeofxor.lanchat.gui;
+package org.dukeofxor.jtalker.gui;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.regex.Pattern;
 
-import org.dukeofxor.lanchat.client.Client;
+import org.dukeofxor.jtalker.client.Client;
 
 import javafx.application.Application;
 import javafx.beans.property.ListProperty;

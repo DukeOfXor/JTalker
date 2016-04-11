@@ -1,4 +1,4 @@
-package org.dukeofxor.lanchat.server;
+package org.dukeofxor.jtalker.server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -6,8 +6,8 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 
-import org.dukeofxor.lanchat.common.message.servertoclient.ClientListServerMessage;
-import org.dukeofxor.lanchat.gui.ServerGUI;
+import org.dukeofxor.jtalker.common.message.servertoclient.ClientListServerMessage;
+import org.dukeofxor.jtalker.gui.ServerGUI;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;

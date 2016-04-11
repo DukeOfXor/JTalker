@@ -1,4 +1,4 @@
-package org.dukeofxor.lanchat.common.message.clienttoserver;
+package org.dukeofxor.jtalker.common.message.clienttoserver;
 
 import java.io.Serializable;
 

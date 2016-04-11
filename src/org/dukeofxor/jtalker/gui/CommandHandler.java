@@ -1,7 +1,7 @@
-package org.dukeofxor.lanchat.gui;
+package org.dukeofxor.jtalker.gui;
 
-import org.dukeofxor.lanchat.server.ClientThread;
-import org.dukeofxor.lanchat.server.Server;
+import org.dukeofxor.jtalker.server.ClientThread;
+import org.dukeofxor.jtalker.server.Server;
 
 import javafx.collections.ObservableList;
 

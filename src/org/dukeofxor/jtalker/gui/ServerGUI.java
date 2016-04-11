@@ -1,10 +1,10 @@
-package org.dukeofxor.lanchat.gui;
+package org.dukeofxor.jtalker.gui;
 
 import java.net.Inet4Address;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import org.dukeofxor.lanchat.server.Server;
+import org.dukeofxor.jtalker.server.Server;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;

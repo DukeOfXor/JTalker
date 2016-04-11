@@ -1,4 +1,4 @@
-package org.dukeofxor.lanchat.gui;
+package org.dukeofxor.jtalker.gui;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;

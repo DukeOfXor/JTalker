@@ -1,1 +1,1 @@
-# LanChat
+# JTalker

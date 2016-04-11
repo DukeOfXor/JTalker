@@ -1,4 +1,4 @@
-package org.dukeofxor.lanchat.server;
+package org.dukeofxor.jtalker.server;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -6,13 +6,13 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import org.dukeofxor.lanchat.common.message.clienttoserver.LoginClientMessage;
-import org.dukeofxor.lanchat.common.message.clienttoserver.LogoutClientMessage;
-import org.dukeofxor.lanchat.common.message.clienttoserver.TextClientMessage;
-import org.dukeofxor.lanchat.common.message.clienttoserver.WhoisinClientMessage;
-import org.dukeofxor.lanchat.common.message.servertoclient.ClientListServerMessage;
-import org.dukeofxor.lanchat.common.message.servertoclient.TextServerMessage;
-import org.dukeofxor.lanchat.gui.ServerGUI;
+import org.dukeofxor.jtalker.common.message.clienttoserver.LoginClientMessage;
+import org.dukeofxor.jtalker.common.message.clienttoserver.LogoutClientMessage;
+import org.dukeofxor.jtalker.common.message.clienttoserver.TextClientMessage;
+import org.dukeofxor.jtalker.common.message.clienttoserver.WhoisinClientMessage;
+import org.dukeofxor.jtalker.common.message.servertoclient.ClientListServerMessage;
+import org.dukeofxor.jtalker.common.message.servertoclient.TextServerMessage;
+import org.dukeofxor.jtalker.gui.ServerGUI;
 
 import javafx.application.Platform;
 
