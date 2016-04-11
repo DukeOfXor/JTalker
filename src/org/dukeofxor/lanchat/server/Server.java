@@ -137,4 +137,22 @@ public class Server extends Thread{
   public ObservableList<ClientThread> getConnectedClients() {
     return connectedClients;
   }
-}
+  
+  public void kickClient(String clientName){
+	  ClientThread clientToKick = null;
+	  for (ClientThread clientThread : connectedClients) {
+		if(clientThread.getUsername().equals(clientName)){
+			clientToKick = clientThread;
+		}
+	}
+	  if(clientToKick != null){
+		  clientToKick.shutdown();
+		  clientToKick.logout();
+		  displayGuiMessage("Client [" + clientToKick.getUsername() + "] kicked");
+	  }else{
+		  displayGuiMessage("Client not Online");
+	  }
+	  
+  }
+	  
+  }
