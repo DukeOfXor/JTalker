@@ -5,6 +5,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -21,6 +22,7 @@ public class LauncherGUI extends Application {
 	    primaryStage.setTitle("LanChat");
 	    primaryStage.setMinWidth(500);
 	    primaryStage.setMinHeight(300);
+	    primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/org/dukeofxor/lanchat/gui/icon.png")));
 	    
         Label clientLabel = new Label("Client");
         clientLabel.getStyleClass().add("title");

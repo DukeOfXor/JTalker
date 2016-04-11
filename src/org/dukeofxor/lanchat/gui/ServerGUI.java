@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCode;
@@ -51,6 +52,7 @@ public class ServerGUI extends Application{
     primaryStage.setTitle("LanChat-Server");
     primaryStage.setMinWidth(1000);
     primaryStage.setMinHeight(600);
+    primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/org/dukeofxor/lanchat/gui/icon.png")));
     primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
       @Override
