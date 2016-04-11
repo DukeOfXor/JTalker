@@ -10,16 +10,12 @@ import javafx.application.Application;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -176,7 +172,6 @@ public class ClientGUI extends Application{
     
     listViewClients = new ListView<String>();
     listViewClients.itemsProperty().bind(listPropertyClients);
-    
     
     borderPaneLeftSideWrapper = new BorderPane();
     borderPaneLeftSideWrapper.setPrefWidth(150);

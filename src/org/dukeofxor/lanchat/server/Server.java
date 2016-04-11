@@ -147,6 +147,7 @@ public class Server extends Thread{
 	}
 	  if(clientToKick != null){
 		  clientToKick.shutdown();
+		  clientToKick.logout();
 		  displayGuiMessage("Client [" + clientToKick.getUsername() + "] kicked");
 	  }else{
 		  displayGuiMessage("Client not Online");

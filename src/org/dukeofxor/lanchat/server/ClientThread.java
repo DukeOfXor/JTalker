@@ -179,4 +179,8 @@ public class ClientThread extends Thread{
   public String getIp() {
     return socket.getInetAddress().getHostAddress();
   }
+
+  public void logout() {
+	server.getConnectedClients().remove(this);
+  }
 }
