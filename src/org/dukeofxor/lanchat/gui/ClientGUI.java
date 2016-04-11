@@ -14,10 +14,13 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -67,6 +70,7 @@ public class ClientGUI extends Application{
     primaryStage.setTitle("LanChat-Client");
     primaryStage.setMinWidth(600);
     primaryStage.setMinHeight(500);
+    primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/org/dukeofxor/lanchat/gui/icon.png")));
     primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
       @Override
@@ -172,6 +176,15 @@ public class ClientGUI extends Application{
     
     listViewClients = new ListView<String>();
     listViewClients.itemsProperty().bind(listPropertyClients);
+    
+    ContextMenu cm = new ContextMenu();
+    MenuItem kick = new MenuItem("kick");
+    MenuItem stop = new MenuItem("stop");
+    MenuItem start = new MenuItem("start");
+    MenuItem pause = new MenuItem("pause");
+    cm.getItems().addAll(kick, stop, start,pause);
+    listViewClients.setContextMenu(cm);
+    
     
     borderPaneLeftSideWrapper = new BorderPane();
     borderPaneLeftSideWrapper.setPrefWidth(150);
