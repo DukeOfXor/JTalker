@@ -1,4 +1,4 @@
-package lanchat.client;
+package org.dukeofxor.lanchat.client;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -6,11 +6,12 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 
+import org.dukeofxor.lanchat.common.message.clienttoserver.LoginClientMessage;
+import org.dukeofxor.lanchat.common.message.clienttoserver.LogoutClientMessage;
+import org.dukeofxor.lanchat.common.message.clienttoserver.TextClientMessage;
+import org.dukeofxor.lanchat.gui.ClientGUI;
+
 import javafx.application.Platform;
-import lanchat.common.message.clienttoserver.LoginClientMessage;
-import lanchat.common.message.clienttoserver.LogoutClientMessage;
-import lanchat.common.message.clienttoserver.TextClientMessage;
-import lanchat.gui.ClientGUI;
 
 public class Client extends Thread{
 

@@ -1,4 +1,4 @@
-package lanchat.server;
+package org.dukeofxor.lanchat.server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -6,12 +6,13 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 
+import org.dukeofxor.lanchat.common.message.servertoclient.ClientListServerMessage;
+import org.dukeofxor.lanchat.gui.ServerGUI;
+
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import lanchat.common.message.servertoclient.ClientListServerMessage;
-import lanchat.gui.ServerGUI;
 
 public class Server extends Thread{
 

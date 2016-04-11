@@ -1,12 +1,13 @@
-package lanchat.client;
+package org.dukeofxor.lanchat.client;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.dukeofxor.lanchat.common.message.servertoclient.ClientListServerMessage;
+import org.dukeofxor.lanchat.common.message.servertoclient.TextServerMessage;
+import org.dukeofxor.lanchat.gui.ClientGUI;
+
 import javafx.application.Platform;
-import lanchat.common.message.servertoclient.ClientListServerMessage;
-import lanchat.common.message.servertoclient.TextServerMessage;
-import lanchat.gui.ClientGUI;
 
 public class MessageListener extends Thread{
 

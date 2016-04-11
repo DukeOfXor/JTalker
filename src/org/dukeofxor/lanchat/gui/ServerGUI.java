@@ -1,8 +1,10 @@
-package lanchat.gui;
+package org.dukeofxor.lanchat.gui;
 
 import java.net.Inet4Address;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import org.dukeofxor.lanchat.server.Server;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -20,7 +22,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import lanchat.server.Server;
 
 public class ServerGUI extends Application{
 
@@ -45,7 +46,7 @@ public class ServerGUI extends Application{
     rootPane = new BorderPane();
     
     Scene scene = new Scene(rootPane, 1000, 600);
-    scene.getStylesheets().add(getClass().getResource("/lanchat/gui/styles.css").toExternalForm());
+    scene.getStylesheets().add(getClass().getResource("/org/dukeofxor/lanchat/gui/styles.css").toExternalForm());
     primaryStage.setScene(scene);
     primaryStage.setTitle("LanChat-Server");
     primaryStage.setMinWidth(1000);

@@ -1,4 +1,4 @@
-package lanchat.gui;
+package org.dukeofxor.lanchat.gui;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -16,7 +16,7 @@ public class LauncherGUI extends Application {
 		SplitPane rootPane = new SplitPane();
 
 	    Scene scene = new Scene(rootPane, 500, 300);
-	    scene.getStylesheets().add(getClass().getResource("/lanchat/gui/styles.css").toExternalForm());
+	    scene.getStylesheets().add(getClass().getResource("/org/dukeofxor/lanchat/gui/styles.css").toExternalForm());
 	    primaryStage.setScene(scene);
 	    primaryStage.setTitle("LanChat");
 	    primaryStage.setMinWidth(500);

@@ -1,8 +1,9 @@
-package lanchat.gui;
+package org.dukeofxor.lanchat.gui;
+
+import org.dukeofxor.lanchat.server.ClientThread;
+import org.dukeofxor.lanchat.server.Server;
 
 import javafx.collections.ObservableList;
-import lanchat.server.ClientThread;
-import lanchat.server.Server;
 
 public class CommandHandler {
   

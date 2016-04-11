@@ -1,8 +1,10 @@
-package lanchat.gui;
+package org.dukeofxor.lanchat.gui;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.regex.Pattern;
+
+import org.dukeofxor.lanchat.client.Client;
 
 import javafx.application.Application;
 import javafx.beans.property.ListProperty;
@@ -24,7 +26,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import lanchat.client.Client;
 
 public class ClientGUI extends Application{
   
@@ -61,7 +62,7 @@ public class ClientGUI extends Application{
     rootPaneChat = new BorderPane();
     
     scene = new Scene(rootPaneLogin, 600, 500);
-    scene.getStylesheets().add(getClass().getResource("/lanchat/gui/styles.css").toExternalForm());
+    scene.getStylesheets().add(getClass().getResource("/org/dukeofxor/lanchat/gui/styles.css").toExternalForm());
     primaryStage.setScene(scene);
     primaryStage.setTitle("LanChat-Client");
     primaryStage.setMinWidth(600);
