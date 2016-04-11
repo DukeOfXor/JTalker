@@ -65,12 +65,12 @@ public class ClientGUI extends Application{
     rootPaneChat = new BorderPane();
     
     scene = new Scene(rootPaneLogin, 600, 500);
-    scene.getStylesheets().add(getClass().getResource("/org/dukeofxor/lanchat/gui/styles.css").toExternalForm());
+    scene.getStylesheets().add(getClass().getResource("/org/dukeofxor/jtalker/gui/styles.css").toExternalForm());
     primaryStage.setScene(scene);
-    primaryStage.setTitle("LanChat-Client");
+    primaryStage.setTitle("JTalker-Client");
     primaryStage.setMinWidth(600);
     primaryStage.setMinHeight(500);
-    primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/org/dukeofxor/lanchat/gui/icon.png")));
+    primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/org/dukeofxor/jtalker/gui/icon.png")));
     primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
       @Override

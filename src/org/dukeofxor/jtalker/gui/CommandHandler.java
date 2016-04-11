@@ -8,7 +8,7 @@ import javafx.collections.ObservableList;
 public class CommandHandler {
   
   public static final String TO_MANY_ARGUMENTS = "Too many arguments for command ";
-  public static final String MISSING_ARGUMENT = "Missing Argument";
+  public static final String MISSING_ARGUMENT = "Missing arguments for command ";
   public static final String USAGE = "Usage: ";
   
   //syntax helps for each command
@@ -17,7 +17,7 @@ public class CommandHandler {
   public static final String CLEAR_USAGE = "clear";
   public static final String EXIT_USAGE = "exit";
   public static final String LIST_USAGE = "list";
-  public static final String KICK_USAGE = "kick clientname";
+  public static final String KICK_USAGE = "kick <clientname>";
   
   private ServerGUI gui;
 
@@ -56,12 +56,17 @@ public class CommandHandler {
 
 
   private void kickClient(String[] cmd) {
-	  if(cmd.length <= 1){
-	      gui.displayMessage(MISSING_ARGUMENT + cmd[0] + "\n" + USAGE + KICK_USAGE);
-	      return;
-	    }else{
-	    	gui.getLanChatServer().kickClient(cmd[1]);	    	
-	    }
+	  if(cmd.length == 2){
+	    gui.getLanChatServer().kickClient(cmd[1]);	    	
+	    return;
+	  }
+	  if(cmd.length > 2){
+	    gui.displayMessage(TO_MANY_ARGUMENTS + cmd[0] + "\n" + USAGE + KICK_USAGE);
+	    return;
+	  }
+	  if(cmd.length < 2){
+	    gui.displayMessage(MISSING_ARGUMENT + cmd[0] + "\n" + USAGE + KICK_USAGE);
+	  }
 }
 
 private void clientList(String[] cmd) {

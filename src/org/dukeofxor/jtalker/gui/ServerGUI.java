@@ -47,12 +47,12 @@ public class ServerGUI extends Application{
     rootPane = new BorderPane();
     
     Scene scene = new Scene(rootPane, 1000, 600);
-    scene.getStylesheets().add(getClass().getResource("/org/dukeofxor/lanchat/gui/styles.css").toExternalForm());
+    scene.getStylesheets().add(getClass().getResource("/org/dukeofxor/jtalker/gui/styles.css").toExternalForm());
     primaryStage.setScene(scene);
-    primaryStage.setTitle("LanChat-Server");
+    primaryStage.setTitle("JTalker-Server");
     primaryStage.setMinWidth(1000);
     primaryStage.setMinHeight(600);
-    primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/org/dukeofxor/lanchat/gui/icon.png")));
+    primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/org/dukeofxor/jtalker/gui/icon.png")));
     primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
       @Override

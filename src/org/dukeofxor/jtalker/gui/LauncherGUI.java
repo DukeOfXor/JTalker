@@ -17,12 +17,12 @@ public class LauncherGUI extends Application {
 		SplitPane rootPane = new SplitPane();
 
 	    Scene scene = new Scene(rootPane, 500, 300);
-	    scene.getStylesheets().add(getClass().getResource("/org/dukeofxor/lanchat/gui/styles.css").toExternalForm());
+	    scene.getStylesheets().add(getClass().getResource("/org/dukeofxor/jtalker/gui/styles.css").toExternalForm());
 	    primaryStage.setScene(scene);
-	    primaryStage.setTitle("LanChat");
+	    primaryStage.setTitle("JTalker");
 	    primaryStage.setMinWidth(500);
 	    primaryStage.setMinHeight(300);
-	    primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/org/dukeofxor/lanchat/gui/icon.png")));
+	    primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/org/dukeofxor/jtalker/gui/icon.png")));
 	    
         Label clientLabel = new Label("Client");
         clientLabel.getStyleClass().add("title");
