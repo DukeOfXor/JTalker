@@ -97,7 +97,9 @@ public class Client extends Thread{
         }
       } catch (IOException e) {}
       
-      messageListener.shutdown();
+      if(messageListener != null){
+        messageListener.shutdown();
+      }
       
       startGuiLoginView("Connection to server lost");
   }
