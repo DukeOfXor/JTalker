@@ -244,8 +244,8 @@ public class ClientGUI extends Application{
   }
 
   private void validateInputs() {
-    String ip = textFieldAddress.getText();
-    String username = textFieldUsername.getText();
+    String ip = textFieldAddress.getText().trim();
+    String username = textFieldUsername.getText().trim();
     
     setLoginErrorText("");
     
