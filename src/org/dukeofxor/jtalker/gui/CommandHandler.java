@@ -19,6 +19,7 @@ public class CommandHandler {
   public static final String LIST_USAGE = "list";
   public static final String KICK_USAGE = "kick <clientname>";
 private static final String WHISPER_USAGE = "whisper username message";
+private static final String SHUTDOWN_USAGE = "shutdown";
   
   private ServerGUI gui;
 
@@ -44,6 +45,10 @@ private static final String WHISPER_USAGE = "whisper username message";
       exit(cmd);
       return;
     }
+    if(cmd[0].equals("shutdown")){
+    	shutdown(cmd);
+    	return;
+    }
     if(cmd[0].equals("list")){
       clientList(cmd);
       return;
@@ -54,6 +59,17 @@ private static final String WHISPER_USAGE = "whisper username message";
     }
   }
   
+private void shutdown(String[] cmd) {
+	if(cmd.length > 1){
+	      gui.displayMessage(TO_MANY_ARGUMENTS + cmd[0] + "\n" + USAGE + SHUTDOWN_USAGE);
+	      return;
+	}
+	if(gui.getLanChatServer().isRunning()){
+	      gui.getLanChatServer().shutdown();
+	}
+	gui.close();
+}
+
 private void kickClient(String[] cmd) {
 	  if(cmd.length == 2){
 	    gui.getLanChatServer().kickClient(cmd[1]);	    	
