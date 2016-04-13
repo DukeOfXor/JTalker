@@ -10,6 +10,8 @@ import javafx.application.Application;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -151,6 +153,19 @@ public class ClientGUI extends Application{
     textAreaChatOutput.setWrapText(true);
     textAreaChatOutput.getStyleClass().add("text-area-chat-output");
     
+    ContextMenu contextMenu = new ContextMenu();
+    textAreaChatOutput.setContextMenu(contextMenu);
+    MenuItem menuItemClear = new MenuItem("clear");
+    contextMenu.getItems().addAll(menuItemClear);
+    menuItemClear.setOnAction(new EventHandler<ActionEvent>() {
+
+		@Override
+		public void handle(ActionEvent event) {
+			textAreaChatOutput.clear();
+		}
+    	
+    });
+    
     textFieldChatInput = new TextField();
     textFieldChatInput.getStyleClass().add("text-field-chat-input");
     textFieldChatInput.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -175,16 +190,7 @@ public class ClientGUI extends Application{
     stackPaneLabelIpWrapper.getStyleClass().add("stack-pane-label-ip-wrapper");
     
     listViewClients = new ListView<String>();
-    listViewClients.itemsProperty().bind(listPropertyClients);
-    
-    ContextMenu cm = new ContextMenu();
-    MenuItem kick = new MenuItem("kick");
-    MenuItem stop = new MenuItem("stop");
-    MenuItem start = new MenuItem("start");
-    MenuItem pause = new MenuItem("pause");
-    cm.getItems().addAll(kick, stop, start,pause);
-    listViewClients.setContextMenu(cm);
-    
+    listViewClients.itemsProperty().bind(listPropertyClients);    
     
     borderPaneLeftSideWrapper = new BorderPane();
     borderPaneLeftSideWrapper.setPrefWidth(150);
