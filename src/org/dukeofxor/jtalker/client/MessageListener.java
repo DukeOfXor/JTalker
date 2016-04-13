@@ -3,6 +3,7 @@ package org.dukeofxor.jtalker.client;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.dukeofxor.jtalker.common.message.clienttoserver.WhisperServerMessage;
 import org.dukeofxor.jtalker.common.message.servertoclient.ClientListServerMessage;
 import org.dukeofxor.jtalker.common.message.servertoclient.TextServerMessage;
 import org.dukeofxor.jtalker.gui.ClientGUI;
@@ -32,6 +33,13 @@ public class MessageListener extends Thread{
           
           displayGuiMessage(textMessage.getUsername(), textMessage.getText());
           continue;
+        }
+        
+        //WhisperMessage
+        if(receivedObject.getClass().equals(WhisperServerMessage.class)){
+        	WhisperServerMessage whisperMessage = (WhisperServerMessage) receivedObject;
+        	
+        	displayGuiMessage(whisperMessage.getUsername(), " whispered to you: " + whisperMessage.getText());
         }
         
         //ClientlistMessage

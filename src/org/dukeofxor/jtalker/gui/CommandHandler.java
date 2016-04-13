@@ -18,6 +18,7 @@ public class CommandHandler {
   public static final String EXIT_USAGE = "exit";
   public static final String LIST_USAGE = "list";
   public static final String KICK_USAGE = "kick <clientname>";
+private static final String WHISPER_USAGE = "whisper username message";
   
   private ServerGUI gui;
 
@@ -51,11 +52,29 @@ public class CommandHandler {
     	kickClient(cmd);
     	return;
     }
+    if(cmd[0].equals("whisper")){
+    	whisperToClient(cmd);
+    	return;
+    }
   }
   
 
 
-  private void kickClient(String[] cmd) {
+  private void whisperToClient(String[] cmd) {
+	  if(cmd.length == 3){
+		  gui.getLanChatServer().whisper(cmd[1], cmd[2]);
+		  return;
+	  }
+	  if(cmd.length < 3){
+		  gui.displayMessage(MISSING_ARGUMENT + cmd[0] + "\n" + USAGE + WHISPER_USAGE);
+		  return;
+	  }
+	  if(cmd.length > 3){
+		  gui.displayMessage(TO_MANY_ARGUMENTS + cmd[0] + "\n" + USAGE + WHISPER_USAGE);
+	  }
+}
+
+private void kickClient(String[] cmd) {
 	  if(cmd.length == 2){
 	    gui.getLanChatServer().kickClient(cmd[1]);	    	
 	    return;
