@@ -102,7 +102,7 @@ public class Client extends Thread{
         messageListener.shutdown();
       }
       
-      startGuiLoginView("Connection to server lost");
+      //startGuiLoginView("Connection to server lost");
   }
 
   private void displayGuiLoginErrorMessage(String errorMessage) {
