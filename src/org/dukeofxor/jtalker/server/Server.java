@@ -155,10 +155,10 @@ public class Server extends Thread{
 	  }
   }
 
-  public void whisper(String username, String message) {
-	getClientThreadByName(username).writeMessage(new WhisperServerMessage(username, message));
+  public void whisper(String username, String message, String sender) {
+	getClientThreadByName(username).writeMessage(new WhisperServerMessage(username, message, sender));
   }
-
+  
 
 /**
  * 

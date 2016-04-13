@@ -111,7 +111,7 @@ public class ClientThread extends Thread{
         //WhisperMessage
         if(receivedObject.getClass().equals(WhisperServerMessage.class)){
         	WhisperServerMessage whisperMessage = (WhisperServerMessage) receivedObject;
-        	server.whisper(whisperMessage.getUsername(), whisperMessage.getText());
+        	server.whisper(whisperMessage.getUsername(), whisperMessage.getText(), this.getUsername());
         	displayGuiMessage("Sent WhisperMessage: " + whisperMessage.getText());
         }
         

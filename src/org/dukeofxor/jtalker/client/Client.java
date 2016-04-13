@@ -166,7 +166,7 @@ public class Client extends Thread{
   
   public void sendWhisperMessage(String username, String message){
 	  try {
-		getOutputStream().writeObject(new WhisperServerMessage(username, message));
+		getOutputStream().writeObject(new WhisperServerMessage(username, message, this.username));
 	} catch (IOException e) {
 		e.printStackTrace();
 	}

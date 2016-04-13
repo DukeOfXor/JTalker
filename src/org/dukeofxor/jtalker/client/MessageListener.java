@@ -42,7 +42,7 @@ public class MessageListener extends Thread{
         if(receivedObject.getClass().equals(WhisperServerMessage.class)){
         	WhisperServerMessage whisperMessage = (WhisperServerMessage) receivedObject;
         	
-        	displayGuiMessage(whisperMessage.getUsername(), " whispered to you: " + whisperMessage.getText());
+        	displayGuiMessage(whisperMessage.getSender(), " whispered to you: " + whisperMessage.getText());
         }
         
         //ClientlistMessage
