@@ -139,10 +139,10 @@ public class Server extends Thread{
     return connectedClients;
   }
   
-  public void kickClient(String clientName){
+  public void kickClient(String username){
 	  ClientThread clientToKick = null;
 	  for (ClientThread clientThread : connectedClients) {
-		if(clientThread.getUsername().equals(clientName)){
+		if(clientThread.getUsername().equals(username)){
 			clientToKick = clientThread;
 		}
 	}

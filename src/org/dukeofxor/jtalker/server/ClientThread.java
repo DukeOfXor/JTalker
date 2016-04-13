@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import org.dukeofxor.jtalker.common.message.clienttoserver.LoginClientMessage;
 import org.dukeofxor.jtalker.common.message.clienttoserver.LogoutClientMessage;
 import org.dukeofxor.jtalker.common.message.clienttoserver.TextClientMessage;
+import org.dukeofxor.jtalker.common.message.clienttoserver.WhisperServerMessage;
 import org.dukeofxor.jtalker.common.message.clienttoserver.WhoisinClientMessage;
 import org.dukeofxor.jtalker.common.message.servertoclient.ClientListServerMessage;
 import org.dukeofxor.jtalker.common.message.servertoclient.TextServerMessage;
@@ -90,6 +91,13 @@ public class ClientThread extends Thread{
           
           server.broadcast(new TextServerMessage(username, textMessage.getText()));
           displayGuiMessage("Sent TextMessage: " + textMessage.getText());
+        }
+        
+        //WhisperMessage
+        if(receivedObject.getClass().equals(WhisperServerMessage.class)){
+        	WhisperServerMessage whisperMessage = (WhisperServerMessage) receivedObject;
+        	server.whisper(whisperMessage.getUsername(), whisperMessage.getText());
+        	displayGuiMessage("Sent WhisperMessage: " + whisperMessage.getText());
         }
         
         //WhoisinMessage

@@ -9,6 +9,7 @@ import java.net.SocketException;
 import org.dukeofxor.jtalker.common.message.clienttoserver.LoginClientMessage;
 import org.dukeofxor.jtalker.common.message.clienttoserver.LogoutClientMessage;
 import org.dukeofxor.jtalker.common.message.clienttoserver.TextClientMessage;
+import org.dukeofxor.jtalker.common.message.clienttoserver.WhisperServerMessage;
 import org.dukeofxor.jtalker.gui.ClientGUI;
 
 import javafx.application.Platform;
@@ -161,5 +162,13 @@ public class Client extends Thread{
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+  
+  public void sendWhisperMessage(String username, String message){
+	  try {
+		getOutputStream().writeObject(new WhisperServerMessage(username, message));
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
   }
 }
