@@ -4,8 +4,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.dukeofxor.jtalker.common.message.servertoclient.ClientListServerMessage;
+import org.dukeofxor.jtalker.common.message.servertoclient.LoginFailedMessage;
 import org.dukeofxor.jtalker.common.message.servertoclient.TextServerMessage;
 import org.dukeofxor.jtalker.gui.ClientGUI;
+
+import com.sun.javafx.collections.SetListenerHelper;
 
 import javafx.application.Platform;
 
@@ -39,6 +42,14 @@ public class MessageListener extends Thread{
           ClientListServerMessage clientListMessage = (ClientListServerMessage) receivedObject;
           
           displayGuiClientlist(clientListMessage.getClientlist());
+        }
+        
+        //LoginFailedMessage
+        if(receivedObject.getClass().equals(LoginFailedMessage.class)){
+          LoginFailedMessage loginFailedMessage = (LoginFailedMessage) receivedObject;
+          
+          startGuiLoginView(loginFailedMessage.getReason());
+          client.disconnect();
         }
         
       } catch (ClassNotFoundException e) {

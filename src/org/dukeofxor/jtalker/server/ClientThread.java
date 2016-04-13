@@ -11,6 +11,7 @@ import org.dukeofxor.jtalker.common.message.clienttoserver.LogoutClientMessage;
 import org.dukeofxor.jtalker.common.message.clienttoserver.TextClientMessage;
 import org.dukeofxor.jtalker.common.message.clienttoserver.WhoisinClientMessage;
 import org.dukeofxor.jtalker.common.message.servertoclient.ClientListServerMessage;
+import org.dukeofxor.jtalker.common.message.servertoclient.LoginFailedMessage;
 import org.dukeofxor.jtalker.common.message.servertoclient.TextServerMessage;
 import org.dukeofxor.jtalker.gui.ServerGUI;
 
@@ -64,11 +65,25 @@ public class ClientThread extends Thread{
       if(receivedObject.getClass().equals(LoginClientMessage.class)){
         LoginClientMessage loginMessage = (LoginClientMessage) receivedObject;
         
-        this.username = loginMessage.getUsername();
-        isLoggedIn = true;
-        server.addClient(this);
-        displayGuiMessage("Logged in");
-        continue;
+        String username = loginMessage.getUsername();
+        boolean usernameInUse = false;
+        
+        for (ClientThread clientThread : server.getConnectedClients()) {
+          if(clientThread.getUsername().equals(username)){
+            usernameInUse = true;
+          }
+        }
+        
+        if(!usernameInUse){
+          this.username = username;
+          isLoggedIn = true;
+          server.addClient(this);
+          displayGuiMessage("Logged in");
+          continue;
+        } else {
+          writeMessage(new LoginFailedMessage("Username already in use"));
+          displayGuiMessage("Failed to login because username was already in use");
+        }
       }
       
       //The following messages from the client only get handled if the client is logged in
