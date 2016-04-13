@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 
+import org.dukeofxor.jtalker.common.message.clienttoserver.WhisperServerMessage;
 import org.dukeofxor.jtalker.common.message.servertoclient.ClientListServerMessage;
 import org.dukeofxor.jtalker.gui.ServerGUI;
 
@@ -138,10 +139,10 @@ public class Server extends Thread{
     return connectedClients;
   }
   
-  public void kickClient(String clientName){
+  public void kickClient(String username){
 	  ClientThread clientToKick = null;
 	  for (ClientThread clientThread : connectedClients) {
-		if(clientThread.getUsername().equals(clientName)){
+		if(clientThread.getUsername().equals(username)){
 			clientToKick = clientThread;
 		}
 	}
@@ -152,7 +153,25 @@ public class Server extends Thread{
 	  }else{
 		  displayGuiMessage("Client not Online");
 	  }
-	  
   }
+
+  public void whisper(String username, String message, String sender) {
+	getClientThreadByName(username).writeMessage(new WhisperServerMessage(username, message, sender));
+  }
+  
+
+/**
+ * 
+ * @param username
+ * @return return the ClientThread with the specified username. Return null if user not online
+ */
+  public ClientThread getClientThreadByName(String username){
+	for (ClientThread clientThread : connectedClients) {
+		if(clientThread.getUsername().equals(username)){
+			return clientThread;
+		}
+	}
+	return null;
+}
 	  
   }

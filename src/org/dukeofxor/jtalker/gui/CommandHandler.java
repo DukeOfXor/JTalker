@@ -18,6 +18,7 @@ public class CommandHandler {
   public static final String EXIT_USAGE = "exit";
   public static final String LIST_USAGE = "list";
   public static final String KICK_USAGE = "kick <clientname>";
+private static final String WHISPER_USAGE = "whisper username message";
   
   private ServerGUI gui;
 
@@ -53,9 +54,7 @@ public class CommandHandler {
     }
   }
   
-
-
-  private void kickClient(String[] cmd) {
+private void kickClient(String[] cmd) {
 	  if(cmd.length == 2){
 	    gui.getLanChatServer().kickClient(cmd[1]);	    	
 	    return;

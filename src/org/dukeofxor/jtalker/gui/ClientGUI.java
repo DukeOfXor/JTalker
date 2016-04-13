@@ -173,9 +173,14 @@ public class ClientGUI extends Application{
       @Override
       public void handle(KeyEvent event) {
          if(event.getCode().equals(KeyCode.ENTER)){
-           sendMessage();
+        	 if(textFieldChatInput.getText().startsWith("/whisper")){
+        		 whisperMessage();
+        	 } else{
+        		 sendMessage();
+        	 }
          }
       }
+
     });
     
     borderPaneMainChatWrapper = new BorderPane();
@@ -286,5 +291,28 @@ public class ClientGUI extends Application{
     }
     client.sendTextMessage(textFieldChatInput.getText());
     textFieldChatInput.clear();
+  }
+  
+  public String getMessageFromWhisper(String[] whisperCommand){
+	  String message = "";
+	  for (int counter = 2; counter < whisperCommand.length; counter++) {
+		message +=  " " + whisperCommand[counter];
+	}
+	  return message;
+  }
+  
+  private void whisperMessage() {
+	  String[] whisperCommand = textFieldChatInput.getText().split(" ");
+	    if(whisperCommand.length < 1){
+	      return;
+	    }
+	    if(client == null){
+	      return;
+	    }
+	    if(!listPropertyClients.get().contains(whisperCommand[1])){
+	    	return;
+	    }
+	    client.sendWhisperMessage(whisperCommand[1], getMessageFromWhisper(whisperCommand));
+	    textFieldChatInput.clear();
   }
 }
