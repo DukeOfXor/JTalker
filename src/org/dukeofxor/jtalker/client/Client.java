@@ -171,4 +171,8 @@ public class Client extends Thread{
 		e.printStackTrace();
 	}
   }
+  
+  public String getUserName(){
+	  return this.username;
+  }
 }

@@ -157,6 +157,7 @@ public class Server extends Thread{
 
   public void whisper(String username, String message, String sender) {
 	getClientThreadByName(username).writeMessage(new WhisperServerMessage(username, message, sender));
+	getClientThreadByName(sender).writeMessage(new WhisperServerMessage(username, message, sender));
   }
   
 
