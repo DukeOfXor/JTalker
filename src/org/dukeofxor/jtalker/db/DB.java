@@ -13,7 +13,7 @@ public class DB {
 	protected DB(){
 		try {
 			Class.forName("org.sqlite.JDBC");
-			connection = DriverManager.getConnection("jdbc:sqlite:" + System.getProperty("user.home" + "/.JTalker/DB.db"));
+			connection = DriverManager.getConnection("jdbc:sqlite:" + System.getProperty("user.home") + "/.JTalker/DB.db");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
