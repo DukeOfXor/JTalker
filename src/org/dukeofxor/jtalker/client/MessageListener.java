@@ -9,8 +9,6 @@ import org.dukeofxor.jtalker.common.message.servertoclient.LoginFailedMessage;
 import org.dukeofxor.jtalker.common.message.servertoclient.TextServerMessage;
 import org.dukeofxor.jtalker.gui.ClientGUI;
 
-import com.sun.javafx.collections.SetListenerHelper;
-
 import javafx.application.Platform;
 
 public class MessageListener extends Thread{
