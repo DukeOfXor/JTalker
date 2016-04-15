@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 import org.dukeofxor.jtalker.common.message.clienttoserver.WhisperServerMessage;
 import org.dukeofxor.jtalker.common.message.servertoclient.ClientListServerMessage;
+import org.dukeofxor.jtalker.db.DB;
+import org.dukeofxor.jtalker.db.controller.DBController;
 import org.dukeofxor.jtalker.gui.ServerGUI;
 
 import javafx.application.Platform;
@@ -20,6 +22,7 @@ public class Server extends Thread{
 
   private Boolean running = false;
   private ServerGUI gui;
+  private DBController dbController;
   private ObservableList<ClientThread> connectedClients = FXCollections.observableArrayList();
   private ServerSocket serverSocket;
   private ArrayList<String> bannedIPs = new ArrayList<String>();
@@ -28,6 +31,7 @@ public class Server extends Thread{
   
   public Server(ServerGUI gui) {
     this.gui = gui;
+    this.dbController = new DBController();
     
     connectedClients.addListener(new ListChangeListener<ClientThread>() {
 
@@ -177,11 +181,11 @@ public class Server extends Thread{
 }
 
 public void banClient(String userToBan) {
-	bannedIPs.add(getClientThreadByName(userToBan).getIp().getHostAddress());
+	dbController.addBannedPlayer(getClientThreadByName(userToBan).getIp().getHostAddress());
 }
 
 public ArrayList<String> getBannedIPs() {
-	return this.bannedIPs;
+	return dbController.getBannedPlayers();
 }
 
 public void disconnect(ClientThread clientToDisconnect) {

@@ -1,10 +1,13 @@
 package org.dukeofxor.jtalker.db.controller;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import org.dukeofxor.jtalker.db.DB;
+
 
 public class DBController {
 	private Connection dbConnection = null;
@@ -30,7 +33,7 @@ public class DBController {
 		}
 	}
 	
-	private void addBannedPlayer(String ip){
+	public void addBannedPlayer(String ip){
 		String sql = "INSERT INTO bannedPlayer (ip) VALUES ('" + ip + "');";
 		try {
 			stmt.executeUpdate(sql);
@@ -40,7 +43,7 @@ public class DBController {
 		}
 	}
 	
-	private void removeBannedPlayer(String ip){
+	public void removeBannedPlayer(String ip){
 		String sqlRemove = "Delete from bannedPlayer where ip = '" + ip + "';";
 		try {
 			stmt.executeUpdate(sqlRemove);
@@ -48,5 +51,21 @@ public class DBController {
 			e.printStackTrace();
 			System.err.println("Fehler bei RemoveBannedPlayer");
 		}
+	}
+	
+	public ArrayList<String> getBannedPlayers(){
+		String sqlSelect = "Select * from bannedPlayer;";
+		ArrayList<String> bannedPlayers = new ArrayList<String>();
+		ResultSet rs;
+		try {
+			rs = stmt.executeQuery(sqlSelect);
+			for (int i=1; rs.next(); i++)
+			{
+				bannedPlayers.add(rs.getString(i));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return bannedPlayers;
 	}
 }
