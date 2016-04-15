@@ -1,6 +1,7 @@
 package org.dukeofxor.jtalker.server;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -21,6 +22,7 @@ public class Server extends Thread{
   private ServerGUI gui;
   private ObservableList<ClientThread> connectedClients = FXCollections.observableArrayList();
   private ServerSocket serverSocket;
+  private ArrayList<String> bannedIPs = new ArrayList<String>();
   
   public static final int PORT = 8954;
   
@@ -147,8 +149,7 @@ public class Server extends Thread{
 		}
 	}
 	  if(clientToKick != null){
-		  clientToKick.shutdown();
-		  clientToKick.logout();
+		  disconnect(clientToKick);
 		  displayGuiMessage("Client [" + clientToKick.getUsername() + "] kicked");
 	  }else{
 		  displayGuiMessage("Client not Online");
@@ -174,5 +175,18 @@ public class Server extends Thread{
 	}
 	return null;
 }
-	  
+
+public void banClient(String userToBan) {
+	bannedIPs.add(getClientThreadByName(userToBan).getIp().getHostAddress());
+}
+
+public ArrayList<String> getBannedIPs() {
+	return this.bannedIPs;
+}
+
+public void disconnect(ClientThread clientToDisconnect) {
+	clientToDisconnect.logout();
+	clientToDisconnect.shutdown();
+}
+
   }

@@ -18,8 +18,9 @@ public class CommandHandler {
   public static final String EXIT_USAGE = "exit";
   public static final String LIST_USAGE = "list";
   public static final String KICK_USAGE = "kick <clientname>";
-private static final String WHISPER_USAGE = "whisper username message";
-private static final String SHUTDOWN_USAGE = "shutdown";
+  public static final String WHISPER_USAGE = "whisper username message";
+  public static final String SHUTDOWN_USAGE = "shutdown";
+  public static final String BAN_USAGE = "ban username";
   
   private ServerGUI gui;
 
@@ -57,8 +58,35 @@ private static final String SHUTDOWN_USAGE = "shutdown";
     	kickClient(cmd);
     	return;
     }
+    if(cmd[0].equals("ban")){
+    	banClient(cmd);
+    	return;
+    }
   }
   
+private void banClient(String[] cmd) {
+	if(cmd.length == 2){
+		if(gui.getLanChatServer().getClientThreadByName(cmd[1]) == null){
+			gui.displayMessage("Client not online\ntype list to see online clients");
+			return;
+		}
+			gui.getLanChatServer().banClient(cmd[1]);
+			kickClient(cmd);
+			return;			
+	}
+	if(cmd.length > 2){
+		gui.displayMessage(TO_MANY_ARGUMENTS + cmd[0] + "\n" + USAGE + BAN_USAGE);
+		return;
+	}
+	if(cmd.length < 2){
+		gui.displayMessage(MISSING_ARGUMENT + cmd[0] + "\n" + USAGE + BAN_USAGE);
+	}
+}
+
+private void disconnectClient(String username){
+	gui.getLanChatServer().disconnect(gui.getLanChatServer().getClientThreadByName(username));
+}
+
 private void shutdown(String[] cmd) {
 	if(cmd.length > 1){
 	      gui.displayMessage(TO_MANY_ARGUMENTS + cmd[0] + "\n" + USAGE + SHUTDOWN_USAGE);
@@ -94,7 +122,7 @@ private void clientList(String[] cmd) {
       StringBuilder output = new StringBuilder("Connected clients:");
       for (ClientThread clientThread : connectedClients) {
         output.append("\n");
-        output.append(clientThread.getIp() + ", ");
+        output.append(clientThread.getIp().getHostAddress() + ", ");
         output.append(clientThread.getUsername());
       }
       
