@@ -10,8 +10,8 @@ import javafx.application.Application;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -247,6 +247,12 @@ public class ClientGUI extends Application{
     textAreaChatOutput.appendText("\n");
   }
   
+  public void displayMessage(String message){
+	  textAreaChatOutput.appendText(message);
+	  textAreaChatOutput.appendText("\n");
+  }
+  
+  
   protected void connect(String ip, String username) {
     String[] split = ip.split(":");
     String address = split[0];
@@ -335,4 +341,12 @@ public class ClientGUI extends Application{
 	    client.sendWhisperMessage(whisperCommand[1], getMessageFromWhisper(whisperCommand));
 	    textFieldChatInput.clear();
   }
+
+public ObservableList<String> getUsernameList() {
+	return listViewClients.getItems();
+}
+
+public Client getClient() {
+	return this.client;
+}
 }
