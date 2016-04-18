@@ -19,7 +19,6 @@ public class DB {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Initialized DB successfully");
 	}
 	
 	public static DB getInstance(){
