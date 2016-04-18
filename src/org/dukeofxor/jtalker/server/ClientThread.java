@@ -3,12 +3,14 @@ package org.dukeofxor.jtalker.server;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 
 import org.dukeofxor.jtalker.common.message.clienttoserver.LoginClientMessage;
 import org.dukeofxor.jtalker.common.message.clienttoserver.LogoutClientMessage;
 import org.dukeofxor.jtalker.common.message.clienttoserver.TextClientMessage;
+import org.dukeofxor.jtalker.common.message.clienttoserver.WhisperServerMessage;
 import org.dukeofxor.jtalker.common.message.clienttoserver.WhoisinClientMessage;
 import org.dukeofxor.jtalker.common.message.servertoclient.ClientListServerMessage;
 import org.dukeofxor.jtalker.common.message.servertoclient.LoginFailedMessage;
@@ -67,6 +69,7 @@ public class ClientThread extends Thread{
         
         String username = loginMessage.getUsername();
         boolean usernameInUse = false;
+        boolean userIsBanned = false;
         
         for (ClientThread clientThread : server.getConnectedClients()) {
           if(clientThread.getUsername().equals(username)){
@@ -74,15 +77,22 @@ public class ClientThread extends Thread{
           }
         }
         
-        if(!usernameInUse){
+        if(server.getBannedIPs().contains(this.getIp().getHostAddress())){
+        	userIsBanned = true;
+        }
+        
+        if(!usernameInUse && !userIsBanned){
           this.username = username;
           isLoggedIn = true;
           server.addClient(this);
           displayGuiMessage("Logged in");
           continue;
-        } else {
-          writeMessage(new LoginFailedMessage("Username already in use"));
-          displayGuiMessage("Failed to login because username was already in use");
+        } else if(userIsBanned){
+        	writeMessage(new LoginFailedMessage("You are banned from this server"));
+        	displayGuiMessage("Failed to login because user is banned from this server");
+        }else if(usernameInUse){
+        	writeMessage(new LoginFailedMessage("Username already in use"));
+        	displayGuiMessage("Failed to login because username was already in use");
         }
       }
       
@@ -105,6 +115,13 @@ public class ClientThread extends Thread{
           
           server.broadcast(new TextServerMessage(username, textMessage.getText()));
           displayGuiMessage("Sent TextMessage: " + textMessage.getText());
+        }
+        
+        //WhisperMessage
+        if(receivedObject.getClass().equals(WhisperServerMessage.class)){
+        	WhisperServerMessage whisperMessage = (WhisperServerMessage) receivedObject;
+        	server.whisper(whisperMessage.getUsername(), whisperMessage.getText(), this.getUsername());
+        	displayGuiMessage("Sent WhisperMessage: " + whisperMessage.getText());
         }
         
         //WhoisinMessage
@@ -191,8 +208,8 @@ public class ClientThread extends Thread{
     return username;
   }
 
-  public String getIp() {
-    return socket.getInetAddress().getHostAddress();
+  public InetAddress getIp() {
+    return socket.getInetAddress();
   }
 
   public void logout() {

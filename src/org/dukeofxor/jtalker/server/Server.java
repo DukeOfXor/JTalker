@@ -1,11 +1,13 @@
 package org.dukeofxor.jtalker.server;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 
+import org.dukeofxor.jtalker.common.message.clienttoserver.WhisperServerMessage;
 import org.dukeofxor.jtalker.common.message.servertoclient.ClientListServerMessage;
 import org.dukeofxor.jtalker.gui.ServerGUI;
 
@@ -20,6 +22,7 @@ public class Server extends Thread{
   private ServerGUI gui;
   private ObservableList<ClientThread> connectedClients = FXCollections.observableArrayList();
   private ServerSocket serverSocket;
+  private ArrayList<String> bannedIPs = new ArrayList<String>();
   
   public static final int PORT = 8954;
   
@@ -138,21 +141,52 @@ public class Server extends Thread{
     return connectedClients;
   }
   
-  public void kickClient(String clientName){
+  public void kickClient(String username){
 	  ClientThread clientToKick = null;
 	  for (ClientThread clientThread : connectedClients) {
-		if(clientThread.getUsername().equals(clientName)){
+		if(clientThread.getUsername().equals(username)){
 			clientToKick = clientThread;
 		}
 	}
 	  if(clientToKick != null){
-		  clientToKick.shutdown();
-		  clientToKick.logout();
+		  disconnect(clientToKick);
 		  displayGuiMessage("Client [" + clientToKick.getUsername() + "] kicked");
 	  }else{
 		  displayGuiMessage("Client not Online");
 	  }
-	  
   }
-	  
+
+  public void whisper(String username, String message, String sender) {
+	getClientThreadByName(username).writeMessage(new WhisperServerMessage(username, message, sender));
+	getClientThreadByName(sender).writeMessage(new WhisperServerMessage(username, message, sender));
+  }
+  
+
+/**
+ * 
+ * @param username
+ * @return return the ClientThread with the specified username. Return null if user not online
+ */
+  public ClientThread getClientThreadByName(String username){
+	for (ClientThread clientThread : connectedClients) {
+		if(clientThread.getUsername().equals(username)){
+			return clientThread;
+		}
+	}
+	return null;
+}
+
+public void banClient(String userToBan) {
+	bannedIPs.add(getClientThreadByName(userToBan).getIp().getHostAddress());
+}
+
+public ArrayList<String> getBannedIPs() {
+	return this.bannedIPs;
+}
+
+public void disconnect(ClientThread clientToDisconnect) {
+	clientToDisconnect.logout();
+	clientToDisconnect.shutdown();
+}
+
   }

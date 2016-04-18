@@ -173,9 +173,27 @@ public class ClientGUI extends Application{
       @Override
       public void handle(KeyEvent event) {
          if(event.getCode().equals(KeyCode.ENTER)){
-           sendMessage();
+        	 String text = textFieldChatInput.getText();
+        	 if(text.startsWith("/whisper")){
+        		 if(!isValidWhisperCommand(text)){
+        			 displayMessage("ERROR", "WRONG USAGE OF WHISPER \n USAGE: /WHISPER USERNAME MESSAGE");
+        		 }else{
+        			 whisperMessage();        			 
+        		 }
+        	 } else{
+        		 sendMessage();
+        	 }
          }
       }
+
+	private boolean isValidWhisperCommand(String whisperCommand) {
+		String[] whisper = whisperCommand.split(" ");
+		if(whisper.length < 3){
+			return false;
+		}
+		return true;
+	}
+
     });
     
     borderPaneMainChatWrapper = new BorderPane();
@@ -286,5 +304,35 @@ public class ClientGUI extends Application{
     }
     client.sendTextMessage(textFieldChatInput.getText());
     textFieldChatInput.clear();
+  }
+  
+  public String getMessageFromWhisper(String[] whisperCommand){
+	  String message = "";
+	  for (int counter = 2; counter < whisperCommand.length; counter++) {
+		message +=  " " + whisperCommand[counter];
+	}
+	  return message;
+  }
+  
+  public String getUsernameFromWhisper(String[] whisperCommand){
+	  if(whisperCommand.length < 3){
+		  return null;
+	  }
+	  return whisperCommand[1];
+  }
+  
+  private void whisperMessage() {
+	  String[] whisperCommand = textFieldChatInput.getText().split(" ");
+	    if(whisperCommand.length < 1){
+	      return;
+	    }
+	    if(client == null){
+	      return;
+	    }
+	    if(!listPropertyClients.get().contains(getUsernameFromWhisper(whisperCommand))){
+	    return;
+	    }
+	    client.sendWhisperMessage(whisperCommand[1], getMessageFromWhisper(whisperCommand));
+	    textFieldChatInput.clear();
   }
 }
