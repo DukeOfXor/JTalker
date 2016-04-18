@@ -1,7 +1,7 @@
 package org.dukeofxor.jtalker.server;
 
+import java.io.File;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import org.dukeofxor.jtalker.common.message.clienttoserver.WhisperServerMessage;
 import org.dukeofxor.jtalker.common.message.servertoclient.ClientListServerMessage;
+import org.dukeofxor.jtalker.db.controller.DBController;
 import org.dukeofxor.jtalker.gui.ServerGUI;
 
 import javafx.application.Platform;
@@ -20,14 +21,19 @@ public class Server extends Thread{
 
   private Boolean running = false;
   private ServerGUI gui;
+  private DBController dbController;
   private ObservableList<ClientThread> connectedClients = FXCollections.observableArrayList();
   private ServerSocket serverSocket;
-  private ArrayList<String> bannedIPs = new ArrayList<String>();
+  private static final File DB_DIRECTORY = new File(System.getProperty("user.home") + "\\.JTalker");
   
   public static final int PORT = 8954;
   
   public Server(ServerGUI gui) {
+	if(!DB_DIRECTORY.exists() || DB_DIRECTORY.isDirectory()){
+		DB_DIRECTORY.mkdir();
+	}
     this.gui = gui;
+    this.dbController = new DBController();
     
     connectedClients.addListener(new ListChangeListener<ClientThread>() {
 
@@ -177,11 +183,11 @@ public class Server extends Thread{
 }
 
 public void banClient(String userToBan) {
-	bannedIPs.add(getClientThreadByName(userToBan).getIp().getHostAddress());
+	dbController.addBannedPlayer(getClientThreadByName(userToBan).getIp().getHostAddress());
 }
 
 public ArrayList<String> getBannedIPs() {
-	return this.bannedIPs;
+	return dbController.getBannedPlayers();
 }
 
 public void disconnect(ClientThread clientToDisconnect) {
