@@ -40,8 +40,8 @@ public class DiscoveryMessageListener extends Thread{
         String message = new String(packet.getData()).trim();
         if(message.equals(DiscoveryMessage.DISCOVERY_REQUEST)){
           //TODO remove syso
-          System.out.println(DiscoveryMessage.DISCOVERY_RESPONSE.toString());
-          byte[] dataToSend = DiscoveryMessage.DISCOVERY_RESPONSE.toString().getBytes();
+          System.out.println(DiscoveryMessage.DISCOVERY_RESPONSE);
+          byte[] dataToSend = DiscoveryMessage.DISCOVERY_RESPONSE.getBytes();
           
           //Send response
           DatagramPacket datagramPacketToSend = new DatagramPacket(dataToSend, dataToSend.length, packet.getAddress(), packet.getPort());
