@@ -39,8 +39,6 @@ public class DiscoveryMessageListener extends Thread{
         //Check if the packet contains the right message
         String message = new String(packet.getData()).trim();
         if(message.equals(DiscoveryMessage.DISCOVERY_REQUEST)){
-          //TODO remove syso
-          System.out.println(DiscoveryMessage.DISCOVERY_RESPONSE);
           byte[] dataToSend = DiscoveryMessage.DISCOVERY_RESPONSE.getBytes();
           
           //Send response
